@@ -278,24 +278,34 @@
             --game-hover: ${colHover};
         }
 
-        /* ИСПРАВЛЕНИЕ: Фон перенесен на body, чтобы предотвратить обрыв цвета при масштабировании */
+        /* ИСПРАВЛЕНИЕ: Жесткая привязка к краям Genially, сплошной фон и защита кликов */
         html, body { 
-            width: 100vw; height: 100vh; margin: 0; padding: 0; 
-            background: var(--game-bg) !important; 
+            width: 100%; height: 100%; margin: 0; padding: 0; 
+            background: var(--game-bg) !important; /* Убрано transparent, чтобы клики не проваливались */
             color: var(--game-text); font-family: 'Playfair Display', serif;
-            box-sizing: border-box; overflow: hidden; 
+            box-sizing: border-box; overflow: hidden; position: fixed; top: 0; left: 0;
+        }
+        
+        .wrapper { 
+            width: 100%; height: 100%;
+            padding: 0 !important; margin: 0 !important; box-sizing: border-box; 
+            display: flex; flex-direction: column; align-items: stretch; justify-content: stretch;
         }
 
         .card {
-            width: 100vw; 
-            height: 100vh; 
+            background: transparent !important; 
+            border: none !important;
+            padding: 15px 20px !important; 
+            width: 100%; 
+            height: 100%; 
             box-sizing: border-box;
-            padding: 15px 20px !important;
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             overflow-y: auto;
             overflow-x: hidden;
+            position: relative;
+            z-index: 10; /* Защита от перекрытия слоями Genially */
         }
 
         .card::-webkit-scrollbar { width: 6px; }
@@ -341,7 +351,7 @@
     </style>
 </head>
 <body>
-    <div class="card" id="app"></div>
+    <div class="wrapper"><div class="card" id="app"></div></div>
     <script>
         const data = ${dataStr};
         const app = document.getElementById('app');
@@ -363,8 +373,7 @@
                 h += '<div class="kb">';
                 sounds.forEach(s => {
                     let safeS = s.replace(/'/g, "&#39;");
-                    // ИСПРАВЛЕНИЕ: Использование data-атрибута для защиты от конфликтов кавычек при масштабировании в Genially
-                    h += '<div class="kb-btn" data-val="['+safeS+']" onclick="insSound(this.getAttribute(\\'data-val\\'))">'+s+'</div>';
+                    h += '<div class="kb-btn" onclick="insSound(&quot;['+safeS+']&quot;)">'+s+'</div>';
                 });
                 h += '</div>';
 
