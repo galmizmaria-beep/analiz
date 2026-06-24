@@ -20,7 +20,7 @@
         }
 
         h1 { font-family: var(--font-title); color: var(--gold); text-align: center; letter-spacing: 2px; margin-bottom: 5px; }
-        .subtitle { color: var(--gold-dim); margin-bottom: 25px; text-align: center; font-style: italic; }
+        .subtitle { color: var(--gold-dim); margin-bottom: 25px; text-align: center; font-style: normal; }
 
         .editor-container { display: flex; gap: 20px; max-width: 1400px; width: 100%; flex-wrap: wrap; align-items: flex-start; }
         .panel { background: var(--bg-panel); border: 2px solid var(--border-color); border-radius: 8px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); flex: 1; min-width: 400px; }
@@ -51,8 +51,8 @@
 </head>
 <body>
 
-    <h1>Слизерин: Лингвистика</h1>
-    <div class="subtitle">Идеально работает в Genially на любых устройствах</div>
+    <h1>Конструктор для лингвистического анализа</h1>
+    <div class="subtitle">Автор: Гальмиз Мария Александровна</div>
 
     <div class="editor-container">
         
@@ -204,20 +204,22 @@
     <style>
         /* Адаптивный фикс для Genially */
         html, body { 
-            width: 100%; min-height: 100vh; margin: 0; padding: 0; 
+            width: 100%; height: 100%; margin: 0; padding: 0; 
             background: #0a110e; color: #d1dad6; font-family: 'Playfair Display', serif;
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            box-sizing: border-box; overflow-x: hidden;
+            box-sizing: border-box; overflow: auto;
         }
-        .wrapper { width: 100%; max-width: 800px; padding: 20px; box-sizing: border-box; margin: auto;}
+        .wrapper { 
+            width: 100%; min-height: 100%; padding: 10px; box-sizing: border-box; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
         .card {
-            background: #112119; border: 2px solid #233b2d; border-radius: 12px; padding: 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9); width: 100%; box-sizing: border-box;
+            background: #112119; border: 2px solid #233b2d; border-radius: 12px; padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9); width: 100%; max-width: 800px; box-sizing: border-box;
         }
         h2 { font-family: 'Cinzel', serif; color: #d4b572; margin-top: 0; text-align: center; font-size: 22px; text-transform: uppercase;}
         .word-title { font-size: 28px; font-weight: bold; color: #f3d48d; text-align: center; margin-bottom: 20px; letter-spacing: 2px;}
         
-        input { background: #0b1511; border: 1px solid #233b2d; color: #d1dad6; padding: 8px; border-radius: 4px; font-size: 15px; font-family: 'Playfair Display', serif; box-sizing: border-box; }
+        input { background: #0b1511; border: 1px solid #233b2d; color: #d1dad6; padding: 8px; border-radius: 4px; font-size: 15px; font-family: 'Playfair Display', serif; box-sizing: border-box; width: 100%;}
         input:focus { outline: none; border-color: #d4b572; }
         
         .btn { background: #d4b572; color: #0a110e; border: none; padding: 12px 20px; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 6px; width: 100%; margin-top: 20px; transition: 0.3s; font-size: 16px;}
@@ -234,7 +236,7 @@
         .kb-btn:active { background: #d4b572; color: #000; }
 
         /* Морфемика */
-        .morph-zone { display: flex; font-size: 32px; justify-content: center; margin: 30px 0; letter-spacing: 1px; font-weight: bold;}
+        .morph-zone { display: flex; font-size: 32px; justify-content: center; margin: 30px 0; letter-spacing: 1px; font-weight: bold; flex-wrap: wrap;}
         .m-part { position: relative; cursor: pointer; padding: 5px 2px; transition: color 0.2s;}
         .m-part:hover { color: #d4b572; }
         .m-svg { position: absolute; top: -20px; left: 0; width: 100%; height: 35px; pointer-events: none;}
@@ -258,9 +260,8 @@
         const data = ${dataStr};
         const app = document.getElementById('app');
 
-        // Вспомогательная функция для нечеткого сравнения характеристик (игнорирует порядок слов)
         function normalizeStr(str) {
-            return str.toLowerCase().replace(/[,.]/g, '').replace(/ё/g, 'е').split(/\\s+/).filter(Boolean).sort().join(' ');
+            return str.toLowerCase().replace(/[,.]/g, '').replace(/ё/g, 'е').split(/\\\\s+/).filter(Boolean).sort().join(' ');
         }
 
         function render() {
@@ -268,12 +269,16 @@
             
             if(data.type === 'phonetic') {
                 h += '<div class="word-title">' + data.word + '</div>';
-                h += '<div style="text-align:center; margin-bottom:15px;">Слоги: <input type="text" id="ph_syl" style="width:150px;"> Транскрипция: <input type="text" id="ph_tr" style="width:150px;"></div>';
+                h += '<div style="text-align:center; margin-bottom:15px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">';
+                h += '<div>Слоги: <input type="text" id="ph_syl" style="width:150px;"></div> <div>Транскрипция: <input type="text" id="ph_tr" style="width:150px;"></div></div>';
                 h += '<div style="color:#9a8451; text-align:center; font-size:12px; margin-bottom:5px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
                 
                 const sounds = ['а','о','у','э','и','ы','б','б\\'','п','п\\'','в','в\\'','ф','ф\\'','г','г\\'','к','к\\'','д','д\\'','т','т\\'','ж','ш','з','з\\'','с','с\\'','х','х\\'','ц','ч\\'','щ\\'','й\\'','л','л\\'','м','м\\'','н','н\\'','р','р\\''];
                 h += '<div class="kb">';
-                sounds.forEach(s => h += '<div class="kb-btn" onclick="insSound(\\'['+s+']\\')">'+s+'</div>');
+                sounds.forEach(s => {
+                    let safeS = s.replace(/'/g, "&apos;");
+                    h += '<div class="kb-btn" onclick="insSound(\\'['+safeS+']\\')">'+s+'</div>';
+                });
                 h += '</div>';
 
                 data.rows.forEach((r, i) => {
@@ -293,7 +298,6 @@
                 h += '<div class="word-title">' + data.word + '</div>';
                 h += '<div style="text-align:center; color:#9a8451; margin-bottom:15px; font-size:14px;">Нажмите на плашку, затем на нужное поле ниже, чтобы переместить её.</div>';
                 
-                // Собираем все теги и перемешиваем
                 let allTags = [];
                 [data.pos, data.base, data.role].forEach(t => { if(t.trim()) allTags.push(t.trim()); });
                 data.const.split(',').concat(data.nonconst.split(','), data.fake.split(',')).forEach(t => { if(t.trim()) allTags.push(t.trim()); });
@@ -318,11 +322,9 @@
             if(data.type === 'morphemic') initMorphemic();
         }
 
-        // Логика Фонетики
         let lastInput = null;
         function insSound(val) { if(lastInput) { lastInput.value = val; lastInput.focus(); } }
 
-        // Логика Морфемики
         let selTool = null, userParts = [];
         function initMorphemic() {
             userParts = data.rows.map(() => '');
@@ -348,7 +350,6 @@
             }));
         }
 
-        // Логика Морфологии (Кликовая)
         let activeTag = null;
         function handleTagClick(tag, e) {
             e.stopPropagation();
@@ -395,7 +396,7 @@
         }
 
         render();
-    <\/script>
+    ${'<'}/script>
 </body>
 </html>`;
 
