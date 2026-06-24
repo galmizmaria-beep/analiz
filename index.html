@@ -7,46 +7,76 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0a110e; --bg-panel: #112119; --bg-inner: #0b1511;
+            --bg-dark: #0a110e;
+            --bg-panel: #112119; --bg-inner: #0b1511;
             --gold: #d4b572; --gold-dim: #9a8451; --gold-hover: #f3d48d;
             --text-light: #d1dad6; --border-color: #233b2d;
-            --font-title: 'Cinzel', serif; --font-text: 'Playfair Display', serif;
+            --font-title: 'Cinzel', serif;
+            --font-text: 'Playfair Display', serif;
         }
 
         body {
-            margin: 0; padding: 20px; background: var(--bg-dark); color: var(--text-light);
+            margin: 0;
+            padding: 20px; background: var(--bg-dark); color: var(--text-light);
             font-family: var(--font-text); display: flex; flex-direction: column; align-items: center;
             min-height: 100vh; box-sizing: border-box;
         }
 
-        h1 { font-family: var(--font-title); color: var(--gold); text-align: center; letter-spacing: 2px; margin-bottom: 5px; }
-        .subtitle { color: var(--gold-dim); margin-bottom: 25px; text-align: center; font-style: normal; }
+        h1 { font-family: var(--font-title); color: var(--gold); text-align: center; letter-spacing: 2px; margin-bottom: 5px;
+        }
+        .subtitle { color: var(--gold-dim); margin-bottom: 25px; text-align: center; font-style: normal;
+        }
 
-        .editor-container { display: flex; gap: 20px; max-width: 1400px; width: 100%; flex-wrap: wrap; align-items: flex-start; }
-        .panel { background: var(--bg-panel); border: 2px solid var(--border-color); border-radius: 8px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); flex: 1; min-width: 400px; }
-        .preview-panel { flex: 1.2; display: flex; flex-direction: column; }
+        .editor-container { display: flex; gap: 20px; max-width: 1400px; width: 100%; flex-wrap: wrap;
+        align-items: flex-start; }
+        .panel { background: var(--bg-panel); border: 2px solid var(--border-color); border-radius: 8px;
+        padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); flex: 1; min-width: 400px;
+        }
+        .preview-panel { flex: 1.2; display: flex; flex-direction: column;
+        }
 
-        .panel-title { font-family: var(--font-title); color: var(--gold); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; font-size: 18px; text-align: center; text-transform: uppercase; }
+        .panel-title { font-family: var(--font-title); color: var(--gold); border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
+        margin-top: 0; margin-bottom: 20px; font-size: 18px; text-align: center; text-transform: uppercase;
+        }
 
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
-        .tab-btn { background: transparent; border: 1px solid var(--gold-dim); color: var(--gold); padding: 8px 15px; font-family: var(--font-title); font-size: 13px; cursor: pointer; transition: all 0.3s; border-radius: 4px; flex: 1; min-width: 100px; text-align: center; }
-        .tab-btn.active, .tab-btn:hover { background: var(--gold); color: var(--bg-dark); box-shadow: 0 0 10px rgba(212, 181, 114, 0.3); }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;
+        }
+        .tab-btn { background: transparent; border: 1px solid var(--gold-dim); color: var(--gold);
+        padding: 8px 15px; font-family: var(--font-title); font-size: 13px; cursor: pointer; transition: all 0.3s; border-radius: 4px; flex: 1; min-width: 100px; text-align: center;
+        }
+        .tab-btn.active, .tab-btn:hover { background: var(--gold); color: var(--bg-dark);
+        box-shadow: 0 0 10px rgba(212, 181, 114, 0.3); }
 
-        label { display: block; margin: 15px 0 5px; font-family: var(--font-title); font-size: 12px; color: var(--gold-dim); letter-spacing: 1px;}
-        input, select, textarea { width: 100%; padding: 10px; background: var(--bg-inner); border: 1px solid var(--border-color); color: var(--text-light); font-family: var(--font-text); font-size: 15px; box-sizing: border-box; border-radius: 4px; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold); }
+        label { display: block;
+        margin: 15px 0 5px; font-family: var(--font-title); font-size: 12px; color: var(--gold-dim);
+        letter-spacing: 1px;}
+        input, select, textarea { width: 100%; padding: 10px; background: var(--bg-inner);
+        border: 1px solid var(--border-color); color: var(--text-light); font-family: var(--font-text); font-size: 15px; box-sizing: border-box; border-radius: 4px;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold);
+        }
 
-        .btn { background: var(--gold); border: none; color: var(--bg-dark); padding: 12px 20px; font-family: var(--font-title); font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 15px; text-transform: uppercase; }
-        .btn:hover { background: var(--gold-hover); }
+        .btn { background: var(--gold); border: none; color: var(--bg-dark); padding: 12px 20px;
+        font-family: var(--font-title); font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 15px; text-transform: uppercase;
+        }
+        .btn:hover { background: var(--gold-hover);
+        }
 
-        .row-item { display: flex; gap: 10px; margin-bottom: 10px; background: var(--bg-inner); padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; align-items: center;}
-        .row-item input, .row-item select { flex: 1; margin: 0; }
-        .del-btn { background: none; border: none; color: #a30000; font-size: 18px; cursor: pointer; font-weight: bold; }
+        .row-item { display: flex; gap: 10px; margin-bottom: 10px; background: var(--bg-inner); padding: 10px;
+        border: 1px solid var(--border-color); border-radius: 4px; align-items: center;}
+        .row-item input, .row-item select { flex: 1;
+        margin: 0; }
+        .del-btn { background: none; border: none; color: #a30000; font-size: 18px;
+        cursor: pointer; font-weight: bold; }
 
-        .section-content { display: none; } .section-content.active { display: block; }
-        iframe { width: 100%; height: 650px; border: 2px dashed var(--gold-dim); border-radius: 8px; background: #000; }
-        .action-row { display: flex; gap: 10px; margin-top: 20px; }
-        .hint { font-size: 12px; color: var(--gold-dim); margin-top: 5px; font-style: italic;}
+        .section-content { display: none;
+        } .section-content.active { display: block; }
+        iframe { width: 100%; height: 650px;
+        border: 2px dashed var(--gold-dim); border-radius: 8px; background: #000; }
+        .action-row { display: flex;
+        gap: 10px; margin-top: 20px; }
+        .hint { font-size: 12px; color: var(--gold-dim); margin-top: 5px;
+        font-style: italic;}
 
         .color-settings {
             margin-top: 25px;
@@ -85,87 +115,102 @@
             <div class="panel-title">Настройки задания</div>
             <div class="tabs">
                 <div class="tab-btn active" onclick="switchTab('phonetic')">Фонетика</div>
+     
                 <div class="tab-btn" onclick="switchTab('morphemic')">Морфемика</div>
                 <div class="tab-btn" onclick="switchTab('morphology')">Морфология</div>
             </div>
 
-            <!-- ФОНЕТИКА -->
             <div id="tab-phonetic" class="section-content active">
                 <label>Слово:</label> <input type="text" id="ph_word" value="ёлка" oninput="updatePreview()">
+       
                 <label>Слоги, ударение (текстом):</label> <input type="text" id="ph_syl" value="ёл-ка, 2 слога" oninput="updatePreview()">
                 <label>Транскрипция:</label> <input type="text" id="ph_trans" value="[й' о л к а]" oninput="updatePreview()">
                 
                 <label>Буквы, звуки и характеристики:</label>
-                <div class="hint">Ученик введет характеристику текстом. Порядок слов (глухой, парный = парный, глухой) в ответе ученика не имеет значения!</div>
+                <div class="hint">Ученик введет характеристику текстом.
+Порядок слов (глухой, парный = парный, глухой) в ответе ученика не имеет значения!</div>
                 <div id="ph_container"></div>
-                <button class="btn" style="background:transparent; border:1px dashed var(--gold); color:var(--gold);" onclick="addPhRow()">+ Буква</button>
+                <button class="btn" style="background:transparent; border:1px dashed var(--gold); color:var(--gold);"
+onclick="addPhRow()">+ Буква</button>
             </div>
 
-            <!-- МОРФЕМИКА -->
             <div id="tab-morphemic" class="section-content">
                 <label>Слово (ученик увидит его слитно):</label>
-                <div class="hint">Разбейте слово на морфемы. Система сама «склеит» их для ученика.</div>
+                <div class="hint">Разбейте слово на морфемы.
+Система сама «склеит» их для ученика.</div>
                 <div id="mo_container"></div>
-                <button class="btn" style="background:transparent; border:1px dashed var(--gold); color:var(--gold);" onclick="addMoRow()">+ Часть слова</button>
+                <button class="btn" style="background:transparent; border:1px dashed var(--gold); color:var(--gold);"
+onclick="addMoRow()">+ Часть слова</button>
             </div>
 
-            <!-- МОРФОЛОГИЯ -->
             <div id="tab-morphology" class="section-content">
                 <label>Слово из текста:</label> <input type="text" id="ml_word" value="красивым" oninput="updatePreview()">
                 <label>Часть речи:</label> <input type="text" id="ml_pos" value="прилагательное" oninput="updatePreview()">
+             
                 <label>Начальная форма:</label> <input type="text" id="ml_base" value="красивый" oninput="updatePreview()">
                 
                 <label>Постоянные признаки (через запятую):</label>
                 <div class="hint">Например: качественное</div>
                 <input type="text" id="ml_const" value="качественное" oninput="updatePreview()">
                 
+  
                 <label>Непостоянные признаки (через запятую):</label>
-                <div class="hint">Например: полная форма, ед. число, м. род, Т. п.</div>
+                <div class="hint">Например: полная форма, ед.
+число, м. род, Т. п.</div>
                 <input type="text" id="ml_nonconst" value="полная форма, единственное число, мужской род, Творительный падеж" oninput="updatePreview()">
                 
                 <label>Синтаксическая роль:</label> <input type="text" id="ml_role" value="определение" oninput="updatePreview()">
                 
+               
                 <label>Ложные варианты (чтобы запутать ученика, через запятую):</label>
                 <input type="text" id="ml_fake" value="существительное, глагол, женский род, сказуемое, относительное" oninput="updatePreview()">
             </div>
 
-            <!-- НАСТРОЙКИ ЦВЕТА ИГРЫ -->
             <div class="color-settings">
-                <div style="font-family: var(--font-title); color: var(--gold); font-size: 13px; margin-bottom: 10px; text-transform: uppercase; text-align: center; letter-spacing: 1px;">Оформление игры (для Genially)</div>
+                <div style="font-family: var(--font-title); color: var(--gold); font-size: 13px; margin-bottom: 10px; text-transform: uppercase; 
+text-align: center; letter-spacing: 1px;">Оформление игры (для Genially)</div>
                 <div class="color-grid">
                     <div class="color-picker-wrapper">
                         <label>Цвет фона:</label>
                         <input type="color" id="clr_bg" value="#112119" oninput="updatePreview()">
+   
                     </div>
                     <div class="color-picker-wrapper">
                         <label>Основной цвет:</label>
                         <input type="color" id="clr_gold" value="#d4b572" oninput="updatePreview()">
+         
                     </div>
                     <div class="color-picker-wrapper">
                         <label>Внутренний фон:</label>
                         <input type="color" id="clr_inner" value="#0b1511" oninput="updatePreview()">
+               
                     </div>
                     <div class="color-picker-wrapper">
                         <label>Приглушенный:</label>
                         <input type="color" id="clr_dim" value="#9a8451" oninput="updatePreview()">
                     </div>
+  
                     <div class="color-picker-wrapper">
                         <label>Цвет текста:</label>
                         <input type="color" id="clr_text" value="#d1dad6" oninput="updatePreview()">
                     </div>
+        
                     <div class="color-picker-wrapper">
                         <label>Границы элементов:</label>
                         <input type="color" id="clr_border" value="#233b2d" oninput="updatePreview()">
                     </div>
+              
                     <div class="color-picker-wrapper" style="grid-column: span 2;">
                         <label>Цвет выделения (Hover):</label>
                         <input type="color" id="clr_hover" value="#f3d48d" oninput="updatePreview()">
                     </div>
-                </div>
+                
+</div>
             </div>
 
             <div class="action-row">
-                <button class="btn" style="background: var(--bg-inner); color: var(--gold); border: 1px solid var(--gold);" onclick="updatePreview()">🔄 Обновить</button>
+                <button class="btn" style="background: var(--bg-inner);
+color: var(--gold); border: 1px solid var(--gold);" onclick="updatePreview()">🔄 Обновить</button>
                 <button class="btn" id="copyBtn" onclick="copyCode()">📋 Копировать код для Genially</button>
             </div>
             <textarea id="outputCode" style="display:none;"></textarea>
@@ -173,7 +218,8 @@
 
         <div class="panel preview-panel">
             <div class="panel-title">Предпросмотр игры</div>
-            <iframe id="previewFrame" srcdoc=""></iframe>
+            
+<iframe id="previewFrame" srcdoc=""></iframe>
         </div>
     </div>
 
@@ -185,81 +231,85 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
             event.target.classList.add('active');
+       
             document.getElementById('tab-' + tab).classList.add('active');
             updatePreview();
         }
 
         function addPhRow(l='', s='', c='') {
-            const div = document.createElement('div'); div.className = 'row-item';
+            const div = document.createElement('div');
+div.className = 'row-item';
             div.innerHTML = `
-                <input type="text" placeholder="Буква" value="${l}" style="max-width: 60px;" oninput="updatePreview()">
-                <input type="text" placeholder="Звук" value="${s}" style="max-width: 60px;" oninput="updatePreview()">
+                <input type="text" placeholder="Буква" value="${l}" style="max-width: 60px;"
+oninput="updatePreview()">
+                <input type="text" placeholder="Звук" value="${s}" style="max-width: 60px;"
+oninput="updatePreview()">
                 <input type="text" placeholder="Характеристика звука" value="${c}" oninput="updatePreview()">
                 <button class="del-btn" onclick="this.parentElement.remove(); updatePreview();">✖</button>
             `;
-            document.getElementById('ph_container').appendChild(div);
+document.getElementById('ph_container').appendChild(div);
             updatePreview();
         }
 
         function addMoRow(p='', t='root') {
-            const div = document.createElement('div'); div.className = 'row-item';
+            const div = document.createElement('div');
+div.className = 'row-item';
             div.innerHTML = `
                 <input type="text" placeholder="Слог/Морфема" value="${p}" oninput="updatePreview()">
                 <select onchange="updatePreview()">
                     <option value="prefix" ${t==='prefix'?'selected':''}>Приставка</option>
                     <option value="root" ${t==='root'?'selected':''}>Корень</option>
+              
                     <option value="suffix" ${t==='suffix'?'selected':''}>Суффикс</option>
                     <option value="ending" ${t==='ending'?'selected':''}>Окончание</option>
                     <option value="postfix" ${t==='postfix'?'selected':''}>Постфикс</option>
                 </select>
                 <button class="del-btn" onclick="this.parentElement.remove(); updatePreview();">✖</button>
             `;
-            document.getElementById('mo_container').appendChild(div);
+document.getElementById('mo_container').appendChild(div);
             updatePreview();
         }
 
         // Стартовые данные
         addPhRow('ё', 'й\'', 'согласный, звонкий непарный, сонорный, мягкий непарный');
-        addPhRow('', 'о', 'гласный, ударный');
+addPhRow('', 'о', 'гласный, ударный');
         addPhRow('л', 'л', 'согласный, звонкий непарный, сонорный, твердый парный');
         addPhRow('к', 'к', 'согласный, глухой парный, твердый парный');
-        addPhRow('а', 'а', 'гласный, безударный');
+addPhRow('а', 'а', 'гласный, безударный');
 
         addMoRow('под', 'prefix'); addMoRow('снеж', 'root'); addMoRow('ник', 'suffix'); addMoRow('и', 'ending');
-
-        function updatePreview() {
+function updatePreview() {
             let task = { type: currentTab };
-
-            if(currentTab === 'phonetic') {
+if(currentTab === 'phonetic') {
                 task.word = document.getElementById('ph_word').value;
-                task.syl = document.getElementById('ph_syl').value;
+task.syl = document.getElementById('ph_syl').value;
                 task.trans = document.getElementById('ph_trans').value;
                 task.rows = Array.from(document.getElementById('ph_container').children).map(row => ({
                     l: row.children[0].value, s: row.children[1].value, c: row.children[2].value
                 }));
-            } else if(currentTab === 'morphemic') {
+} else if(currentTab === 'morphemic') {
                 task.rows = Array.from(document.getElementById('mo_container').children).map(row => ({
                     p: row.children[0].value, t: row.children[1].value
                 }));
-            } else {
+} else {
                 task.word = document.getElementById('ml_word').value;
-                task.pos = document.getElementById('ml_pos').value;
+task.pos = document.getElementById('ml_pos').value;
                 task.base = document.getElementById('ml_base').value;
                 task.const = document.getElementById('ml_const').value;
                 task.nonconst = document.getElementById('ml_nonconst').value;
                 task.role = document.getElementById('ml_role').value;
                 task.fake = document.getElementById('ml_fake').value;
-            }
+}
 
             const dataStr = JSON.stringify(task);
 
             const colBg = document.getElementById('clr_bg').value;
-            const colGold = document.getElementById('clr_gold').value;
+const colGold = document.getElementById('clr_gold').value;
             const colInner = document.getElementById('clr_inner').value;
             const colDim = document.getElementById('clr_dim').value;
             const colText = document.getElementById('clr_text').value;
             const colBorder = document.getElementById('clr_border').value;
-            const colHover = document.getElementById('clr_hover').value;
+const colHover = document.getElementById('clr_hover').value;
 
             const htmlCode = `<!DOCTYPE html>
 <html lang="ru">
@@ -278,24 +328,26 @@
             --game-hover: ${colHover};
         }
 
-        /* ИСПРАВЛЕНИЕ: Жесткая привязка к краям Genially без отступов */
         html, body { 
-            width: 100%; height: 100%; margin: 0; padding: 0; 
+            width: 100%;
+            height: 100%; margin: 0; padding: 0; 
             background: transparent !important; color: var(--game-text); font-family: 'Playfair Display', serif;
-            box-sizing: border-box; overflow: hidden; position: relative;
+            box-sizing: border-box; overflow: hidden;
+            position: relative;
         }
         
         .wrapper { 
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%; height: 100%; position: relative;
             padding: 0 !important; margin: 0 !important; box-sizing: border-box; 
-            display: flex; flex-direction: column; align-items: stretch; justify-content: stretch;
+            display: flex; flex-direction: column;
+            align-items: stretch; justify-content: stretch;
         }
 
         .card {
-            background: var(--game-bg) !important; 
+            background: var(--game-bg) !important;
             border: none !important;
-            padding: 15px 20px !important; /* Уменьшены отступы, чтобы влезало */
-            width: 100%; 
+            padding: 15px 20px !important; 
+            width: 100%;
             height: 100%; 
             box-sizing: border-box;
             display: flex; 
@@ -310,24 +362,41 @@
         .card::-webkit-scrollbar-track { background: var(--game-inner); }
         .card::-webkit-scrollbar-thumb { background: var(--game-gold-dim); border-radius: 3px; }
 
-        /* ИСПРАВЛЕНИЕ: Размеры шрифтов немного уменьшены для пропорций слайда */
-        h2 { font-family: 'Cinzel', serif; color: var(--game-gold); margin-top: 0; margin-bottom: 10px; text-align: center; font-size: 18px; text-transform: uppercase; letter-spacing: 1px;}
-        .word-title { font-size: 24px; font-weight: bold; color: var(--game-hover); text-align: center; margin-bottom: 15px; letter-spacing: 2px;}
+        .wrapper h2 { font-family: 'Cinzel', serif;
+            color: var(--game-gold); margin-top: 0; margin-bottom: 10px; text-align: center; font-size: 18px; text-transform: uppercase;
+            letter-spacing: 1px;}
+        .word-title { font-size: 24px; font-weight: bold; color: var(--game-hover); text-align: center;
+            margin-bottom: 15px; letter-spacing: 2px;}
         
-        input { background: var(--game-inner); border: 1px solid var(--game-border) !important; color: var(--game-text); padding: 6px; border-radius: 4px; font-size: 14px; font-family: 'Playfair Display', serif; box-sizing: border-box; width: 100%; min-width: 0;}
-        input:focus { outline: none; border-color: var(--game-gold) !important; }
+        .wrapper input { background: var(--game-inner);
+            border: 1px solid var(--game-border) !important; color: var(--game-text); padding: 6px; border-radius: 4px; font-size: 14px; font-family: 'Playfair Display', serif; box-sizing: border-box;
+            width: 100%; min-width: 0;}
+        .wrapper input:focus { outline: none; border-color: var(--game-gold) !important;
+        }
         
-        .btn { background: var(--game-gold) !important; color: var(--game-inner) !important; border: none !important; padding: 10px 15px !important; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 6px !important; width: 100%; max-width: 400px; margin-top: auto; transition: 0.3s; font-size: 14px; box-sizing: border-box; flex-shrink: 0;}
-        .btn:hover { background: var(--game-hover) !important; }
-        .msg { margin-top: 10px; font-weight: bold; font-family: 'Cinzel', serif; text-align: center; font-size: 16px; min-height: 20px;}
+        .btn { background: var(--game-gold) !important;
+            color: var(--game-inner) !important; border: none !important; padding: 10px 15px !important; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 6px !important;
+            width: 100%; max-width: 400px; margin-top: auto; transition: 0.3s; font-size: 14px; box-sizing: border-box;
+            flex-shrink: 0;}
+        .btn:hover { background: var(--game-hover) !important;
+        }
+        .msg { margin-top: 10px; font-weight: bold; font-family: 'Cinzel', serif; text-align: center;
+            font-size: 16px; min-height: 20px; transition: transform 0.15s, opacity 0.15s;}
 
         /* Фонетика */
-        .ph-row { display: flex; gap: 8px; margin-bottom: 6px; align-items: center; flex-wrap: nowrap; width: 100%; max-width: 700px; justify-content: center; box-sizing: border-box;}
-        .ph-l { font-weight: bold; font-size: 18px; min-width: 25px; text-align: center; color: var(--game-gold);}
-        .ph-s { width: 50px; min-width: 45px; text-align: center; font-weight: bold; }
+        .ph-row { display: flex;
+            gap: 8px; margin-bottom: 6px; align-items: center; flex-wrap: nowrap; width: 100%; max-width: 700px; justify-content: center;
+            box-sizing: border-box;}
+        .ph-l { font-weight: bold; font-size: 18px; min-width: 25px; text-align: center;
+            color: var(--game-gold);}
+        .ph-s { width: 50px !important; min-width: 45px !important; text-align: center; font-weight: bold; }
         .ph-c { flex: 1; width: 100%;}
-        .kb { display: flex; flex-wrap: wrap; gap: 4px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; justify-content: center; margin-bottom: 15px; width: 100%; max-width: 700px; box-sizing: border-box;}
-        .kb-btn { background: var(--game-border); border: 1px solid var(--game-gold-dim) !important; color: var(--game-gold); padding: 4px; min-width: 28px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; box-sizing: border-box; transition: 0.2s;}
+        .kb { display: flex; flex-wrap: wrap; gap: 4px; background: rgba(0,0,0,0.4);
+            padding: 10px; border-radius: 6px; justify-content: center; margin-bottom: 15px; width: 100%; max-width: 700px;
+            box-sizing: border-box;}
+        .kb-btn { background: var(--game-border); border: 1px solid var(--game-gold-dim) !important; color: var(--game-gold);
+            padding: 4px; min-width: 28px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; box-sizing: border-box;
+            transition: 0.2s;}
         .kb-btn:active, .kb-btn:hover { background: var(--game-gold); color: var(--game-inner); }
 
         /* Морфемика */
@@ -338,7 +407,7 @@
         .m-tools { display: flex; gap: 8px !important; justify-content: center; flex-wrap: wrap; margin-bottom: 15px; width: 100%; align-items: center; box-sizing: border-box;}
         .m-tool { border: 2px solid var(--game-border) !important; padding: 6px 10px !important; cursor: pointer; border-radius: 6px !important; color: var(--game-gold-dim); font-family: 'Cinzel', serif; font-size: 12px; font-weight: bold; text-align: center; transition: 0.2s;}
         .m-tool.active, .m-tool:hover { background: var(--game-border) !important; color: var(--game-gold) !important; border-color: var(--game-gold) !important; box-shadow: 0 0 10px rgba(212,181,114,0.4) !important; }
-        path { stroke: var(--game-gold); fill: none; stroke-width: 2.5; }
+        .wrapper path { stroke: var(--game-gold); fill: none; stroke-width: 2.5; }
 
         /* Морфология */
         .tag-bank { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 8px; justify-content: center; min-height: 40px; margin-bottom: 15px; width: 100%; max-width: 700px; box-sizing: border-box;}
@@ -355,8 +424,11 @@
         const data = ${dataStr};
         const app = document.getElementById('app');
 
+        window.lastInputTarget = null;
+        let activeTag = null;
+
         function normalizeStr(str) {
-            return str.toLowerCase().replace(/[,.]/g, '').replace(/ё/g, 'е').split(/\\s+/).filter(Boolean).sort().join(' ');
+            return str.toLowerCase().replace(/[,.\\[\\]()]/g, '').replace(/ё/g, 'е').split(/\\s+/).filter(Boolean).sort().join(' ');
         }
 
         function render() {
@@ -368,18 +440,17 @@
                 h += '<div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Слоги: <input type="text" id="ph_syl" style="max-width:160px;"></div> <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Транскрипция: <input type="text" id="ph_tr" style="max-width:160px;"></div></div>';
                 h += '<div style="color:var(--game-gold-dim); text-align:center; font-size:11px; margin-bottom:5px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
                 
-                // ИСПРАВЛЕНИЕ: Двойные кавычки для предотвращения ошибки синтаксиса в JS
                 const sounds = ["а","о","у","э","и","ы","б","б'","п","п'","в","в'","ф","ф'","г","г'","к","к'","д","д'","т","т'","ж","ш","з","з'","с","с'","х","х'","ц","ч'","щ'","й'","л","л'","м","м'","н","н'","р","р'"];
                 h += '<div class="kb">';
                 sounds.forEach(s => {
-                    let safeS = s.replace(/'/g, "&#39;");
-                    h += '<div class="kb-btn" onclick="insSound(&quot;['+safeS+']&quot;)">'+s+'</div>';
+                    // Обрати внимание: теперь никаких скриптов внутри HTML, только чистое значение data-sound
+                    h += '<div class="kb-btn" data-sound="[' + s + ']">' + s + '</div>';
                 });
                 h += '</div>';
 
                 data.rows.forEach((r, i) => {
                     h += '<div class="ph-row"><div class="ph-l">'+r.l+'</div>';
-                    h += '<input type="text" class="ph-s" id="s_'+i+'" onclick="lastInput=this" placeholder="[ ]">';
+                    h += '<input type="text" class="ph-s" id="s_'+i+'" placeholder="[ ]">';
                     h += '<input type="text" class="ph-c" id="c_'+i+'" placeholder="Опишите звук..."></div>';
                 });
             } 
@@ -394,33 +465,57 @@
             else if(data.type === 'morphology') {
                 h += '<div class="word-title">' + data.word + '</div>';
                 h += '<div style="text-align:center; color:var(--game-gold-dim); margin-bottom:10px; font-size:13px; width: 100%;">Нажмите на плашку, затем на нужное поле ниже, чтобы переместить её.</div>';
-                
                 let allTags = [];
                 [data.pos, data.base, data.role].forEach(t => { if(t.trim()) allTags.push(t.trim()); });
                 data.const.split(',').concat(data.nonconst.split(','), data.fake.split(',')).forEach(t => { if(t.trim()) allTags.push(t.trim()); });
                 allTags = allTags.sort(() => Math.random() - 0.5);
 
-                h += '<div class="tag-bank" id="bank" onclick="handleZoneClick(this)">';
-                allTags.forEach((t, i) => h += '<div class="tag" id="tag_'+i+'" onclick="handleTagClick(this, event)">'+t+'</div>');
+                h += '<div class="tag-bank" id="bank">';
+                allTags.forEach((t, i) => h += '<div class="tag" id="tag_'+i+'">'+t+'</div>');
                 h += '</div>';
-
                 const zones = [
                     {id: 'z_pos', n: 'Часть речи'}, {id: 'z_base', n: 'Начальная форма'},
                     {id: 'z_const', n: 'Постоянные признаки'}, {id: 'z_nonconst', n: 'Непостоянные признаки'},
                     {id: 'z_role', n: 'Синтаксическая роль'}
                 ];
-                zones.forEach(z => h += '<div class="drop-zone" id="'+z.id+'" onclick="handleZoneClick(this)"><div class="dz-title">'+z.n+'</div></div>');
+                zones.forEach(z => h += '<div class="drop-zone" id="'+z.id+'"><div class="dz-title">'+z.n+'</div></div>');
             }
 
-            h += '<button class="btn" onclick="check()">ПРОВЕРИТЬ</button>';
+            h += '<button class="btn" id="checkBtn">ПРОВЕРИТЬ</button>';
             h += '<div id="msg" class="msg"></div>';
             app.innerHTML = h;
 
-            if(data.type === 'morphemic') initMorphemic();
-        }
+            // БЕЗОПАСНАЯ ПРИВЯЗКА СОБЫТИЙ:
+            // Теперь Genially не будет ругаться, потому что мы добавляем клики через JavaScript, а не внутри HTML
+            document.getElementById('checkBtn').addEventListener('click', check);
 
-        let lastInput = null;
-        function insSound(val) { if(lastInput) { lastInput.value = val; lastInput.focus(); } }
+            if(data.type === 'phonetic') {
+                document.querySelectorAll('.ph-s').forEach(inp => {
+                    inp.addEventListener('focus', function() { window.lastInputTarget = this; });
+                    inp.addEventListener('click', function() { window.lastInputTarget = this; });
+                });
+                document.querySelectorAll('.kb-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault(); // Защита от потери фокуса полем
+                        if(window.lastInputTarget) {
+                            window.lastInputTarget.value = this.dataset.sound;
+                            window.lastInputTarget.focus();
+                        }
+                    });
+                });
+            }
+            else if(data.type === 'morphemic') {
+                initMorphemic();
+            }
+            else if(data.type === 'morphology') {
+                document.querySelectorAll('.tag').forEach(tag => {
+                    tag.addEventListener('click', function(e) { handleTagClick(this, e); });
+                });
+                document.querySelectorAll('.drop-zone, #bank').forEach(zone => {
+                    zone.addEventListener('click', function() { handleZoneClick(this); });
+                });
+            }
+        }
 
         let selTool = null, userParts = [];
         function initMorphemic() {
@@ -429,7 +524,6 @@
                 document.querySelectorAll('.m-tool').forEach(ti => ti.classList.remove('active'));
                 this.classList.add('active'); selTool = this.dataset.t;
             }));
-            
             document.querySelectorAll('.m-part').forEach(p => p.addEventListener('click', function() {
                 if(!selTool) return;
                 userParts[this.dataset.i] = selTool;
@@ -447,13 +541,14 @@
             }));
         }
 
-        let activeTag = null;
         function handleTagClick(tag, e) {
             e.stopPropagation();
             if(activeTag) activeTag.classList.remove('selected');
             if(activeTag === tag) { activeTag = null; return; }
-            activeTag = tag; tag.classList.add('selected');
+            activeTag = tag;
+            tag.classList.add('selected');
         }
+
         function handleZoneClick(zone) {
             if(!activeTag) return;
             zone.appendChild(activeTag);
@@ -488,8 +583,15 @@
             }
 
             const msg = document.getElementById('msg');
-            msg.style.color = ok ? 'var(--game-gold)' : '#a30000';
-            msg.innerText = ok ? 'ВЕЛИКОЛЕПНО! Разбор выполнен верно. 🏆' : 'Обнаружены ошибки. Проверьте всё внимательно! ❌';
+            msg.style.transform = 'scale(0.9)';
+            msg.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                msg.style.transform = 'scale(1)';
+                msg.style.opacity = '1';
+                msg.style.color = ok ? 'var(--game-gold)' : '#a30000';
+                msg.innerText = ok ? 'ВЕЛИКОЛЕПНО! Разбор выполнен верно. 🏆' : 'Обнаружены ошибки. Проверьте всё внимательно! ❌';
+            }, 150);
         }
 
         render();
@@ -499,14 +601,14 @@
 
             document.getElementById('outputCode').value = htmlCode;
             document.getElementById('previewFrame').srcdoc = htmlCode;
-        }
+            }
 
         function copyCode() {
             const ta = document.getElementById('outputCode');
             ta.style.display = 'block'; ta.select(); document.execCommand('copy'); ta.style.display = 'none';
             document.getElementById('copyBtn').innerText = '✔️ СКОПИРОВАНО!';
             setTimeout(() => { document.getElementById('copyBtn').innerText = '📋 Копировать код для Genially'; }, 2000);
-        }
+            }
 
         updatePreview();
     </script>
