@@ -209,31 +209,31 @@
             box-sizing: border-box; overflow: auto !important;
         }
         .wrapper { 
-            width: 100%; min-height: 100%; padding: 15px !important; box-sizing: border-box; 
+            width: 100%; min-height: 100vh; padding: 3% !important; box-sizing: border-box; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
         .card {
-            background: #112119 !important; border: 2px solid #233b2d !important; border-radius: 12px !important; padding: 25px !important;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(212,181,114,0.1) !important; width: 100%; max-width: 800px; box-sizing: border-box;
-            display: flex; flex-direction: column; align-items: center; flex-shrink: 0 !important;
+            background: #112119 !important; border: 2px solid #233b2d !important; border-radius: 12px !important; padding: 4% !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(212,181,114,0.1) !important; width: 100%; max-width: 100%; box-sizing: border-box;
+            display: flex; flex-direction: column; align-items: center;
         }
         h2 { font-family: 'Cinzel', serif; color: #d4b572; margin-top: 0; text-align: center; font-size: 22px; text-transform: uppercase;}
         .word-title { font-size: 28px; font-weight: bold; color: #f3d48d; text-align: center; margin-bottom: 20px; letter-spacing: 2px;}
         
-        input { background: #0b1511; border: 1px solid #233b2d !important; color: #d1dad6; padding: 8px; border-radius: 4px; font-size: 15px; font-family: 'Playfair Display', serif; box-sizing: border-box; width: 100%;}
+        input { background: #0b1511; border: 1px solid #233b2d !important; color: #d1dad6; padding: 8px; border-radius: 4px; font-size: 15px; font-family: 'Playfair Display', serif; box-sizing: border-box; width: 100%; min-width: 0;}
         input:focus { outline: none; border-color: #d4b572 !important; }
         
-        .btn { background: #d4b572 !important; color: #0a110e !important; border: none !important; padding: 15px 20px !important; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 6px !important; width: 100%; margin-top: 20px; transition: 0.3s; font-size: 16px; flex-shrink: 0 !important;}
+        .btn { background: #d4b572 !important; color: #0a110e !important; border: none !important; padding: 15px 20px !important; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 6px !important; width: 100%; margin-top: 20px; transition: 0.3s; font-size: 16px; box-sizing: border-box;}
         .btn:hover { background: #f3d48d !important; }
         .msg { margin-top: 15px; font-weight: bold; font-family: 'Cinzel', serif; text-align: center; font-size: 18px;}
 
         /* Фонетика */
-        .ph-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; flex-wrap: wrap; width: 100%; justify-content: center;}
-        .ph-l { font-weight: bold; font-size: 20px; width: 25px; text-align: center; color: #d4b572;}
-        .ph-s { width: 60px; text-align: center; font-weight: bold; }
-        .ph-c { flex: 1; min-width: 200px;}
-        .kb { display: flex; flex-wrap: wrap; gap: 5px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; justify-content: center; margin-bottom: 20px; width: 100%; box-sizing: border-box;}
-        .kb-btn { background: #233b2d; border: 1px solid #9a8451 !important; color: #d4b572; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; flex-shrink: 0 !important;}
+        .ph-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; flex-wrap: nowrap; width: 100%; justify-content: center; box-sizing: border-box;}
+        .ph-l { font-weight: bold; font-size: 20px; min-width: 25px; text-align: center; color: #d4b572;}
+        .ph-s { width: 60px; min-width: 50px; text-align: center; font-weight: bold; }
+        .ph-c { flex: 1; width: 100%;}
+        .kb { display: flex; flex-wrap: wrap; gap: 6px; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 6px; justify-content: center; margin-bottom: 20px; width: 100%; box-sizing: border-box;}
+        .kb-btn { background: #233b2d; border: 1px solid #9a8451 !important; color: #d4b572; padding: 8px; min-width: 35px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 16px; box-sizing: border-box; transition: 0.2s;}
         .kb-btn:active { background: #d4b572; color: #000; }
 
         /* Морфемика */
@@ -241,14 +241,14 @@
         .m-part { position: relative; cursor: pointer; padding: 5px 2px; transition: color 0.2s;}
         .m-part:hover { color: #d4b572; }
         .m-svg { position: absolute; top: -20px; left: 0; width: 100%; height: 35px; pointer-events: none;}
-        .m-tools { display: flex; gap: 12px !important; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; width: 100%; align-items: center;}
-        .m-tool { border: 2px solid #233b2d !important; padding: 10px 15px !important; cursor: pointer; border-radius: 6px !important; color: #9a8451; font-family: 'Cinzel', serif; font-weight: bold; flex-shrink: 0 !important;}
+        .m-tools { display: flex; gap: 12px !important; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; width: 100%; align-items: center; box-sizing: border-box;}
+        .m-tool { border: 2px solid #233b2d !important; padding: 10px 15px !important; cursor: pointer; border-radius: 6px !important; color: #9a8451; font-family: 'Cinzel', serif; font-weight: bold; text-align: center;}
         .m-tool.active { background: #233b2d !important; color: #d4b572 !important; border-color: #d4b572 !important; box-shadow: 0 0 10px rgba(212,181,114,0.4) !important; }
         path { stroke: #d4b572; fill: none; stroke-width: 2.5; }
 
         /* Морфология */
         .tag-bank { display: flex; flex-wrap: wrap; gap: 10px; padding: 15px; background: rgba(0,0,0,0.5); border-radius: 8px; justify-content: center; min-height: 50px; margin-bottom: 20px; width: 100%; box-sizing: border-box;}
-        .tag { background: #233b2d !important; border: 1px solid #d4b572 !important; padding: 8px 15px !important; border-radius: 20px !important; font-size: 14px; cursor: pointer; user-select: none; transition: 0.2s; color: #f3d48d; flex-shrink: 0 !important;}
+        .tag { background: #233b2d !important; border: 1px solid #d4b572 !important; padding: 8px 15px !important; border-radius: 20px !important; font-size: 14px; cursor: pointer; user-select: none; transition: 0.2s; color: #f3d48d; text-align: center;}
         .tag.selected { background: #d4b572 !important; color: #000 !important; transform: scale(1.05); box-shadow: 0 0 15px rgba(212,181,114,0.6) !important;}
         .drop-zone { border: 2px dashed #9a8451 !important; padding: 15px !important; border-radius: 8px !important; margin-bottom: 15px; min-height: 40px; display: flex; flex-wrap: wrap; gap: 10px; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.2) !important; width: 100%; box-sizing: border-box;}
         .drop-zone:hover { background: rgba(212,181,114,0.1) !important; }
@@ -270,8 +270,8 @@
             
             if(data.type === 'phonetic') {
                 h += '<div class="word-title">' + data.word + '</div>';
-                h += '<div style="text-align:center; margin-bottom:15px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; width:100%;">';
-                h += '<div>Слоги: <input type="text" id="ph_syl" style="width:150px;"></div> <div>Транскрипция: <input type="text" id="ph_tr" style="width:150px;"></div></div>';
+                h += '<div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; width:100%; box-sizing:border-box; margin-bottom:15px;">';
+                h += '<div style="display:flex; align-items:center; gap:5px; flex:1; min-width:140px; justify-content:center;">Слоги: <input type="text" id="ph_syl" style="max-width:180px;"></div> <div style="display:flex; align-items:center; gap:5px; flex:1; min-width:140px; justify-content:center;">Транскрипция: <input type="text" id="ph_tr" style="max-width:180px;"></div></div>';
                 h += '<div style="color:#9a8451; text-align:center; font-size:12px; margin-bottom:5px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
                 
                 const sounds = ['а','о','у','э','и','ы','б','б\\'','п','п\\'','в','в\\'','ф','ф\\'','г','г\\'','к','к\\'','д','д\\'','т','т\\'','ж','ш','з','з\\'','с','с\\'','х','х\\'','ц','ч\\'','щ\\'','й\\'','л','л\\'','м','м\\'','н','н\\'','р','р\\''];
