@@ -44,34 +44,9 @@
         .del-btn { background: none; border: none; color: #a30000; font-size: 18px; cursor: pointer; font-weight: bold; }
 
         .section-content { display: none; } .section-content.active { display: block; }
-        iframe { width: 100%; height: 650px; border: 2px dashed var(--gold-dim); border-radius: 8px; background: #000; }
+        iframe { width: 100%; height: 600px; border: 2px dashed var(--gold-dim); border-radius: 8px; background: #000; }
         .action-row { display: flex; gap: 10px; margin-top: 20px; }
         .hint { font-size: 12px; color: var(--gold-dim); margin-top: 5px; font-style: italic;}
-
-        .color-settings {
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 1px dashed var(--border-color);
-        }
-        .color-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-        .color-picker-wrapper {
-            display: flex;
-            flex-direction: column;
-        }
-        .color-picker-wrapper label {
-            margin: 0 0 4px 0;
-            font-size: 10px;
-        }
-        .color-picker-wrapper input[type="color"] {
-            padding: 0;
-            height: 35px;
-            cursor: pointer;
-            border: 1px solid var(--border-color);
-        }
     </style>
 </head>
 <body>
@@ -81,6 +56,7 @@
 
     <div class="editor-container">
         
+        <!-- ЛЕВАЯ ПАНЕЛЬ -->
         <div class="panel">
             <div class="panel-title">Настройки задания</div>
             <div class="tabs">
@@ -129,41 +105,6 @@
                 <input type="text" id="ml_fake" value="существительное, глагол, женский род, сказуемое, относительное" oninput="updatePreview()">
             </div>
 
-            <!-- НАСТРОЙКИ ЦВЕТА ИГРЫ -->
-            <div class="color-settings">
-                <div style="font-family: var(--font-title); color: var(--gold); font-size: 13px; margin-bottom: 10px; text-transform: uppercase; text-align: center; letter-spacing: 1px;">Оформление игры (для Genially)</div>
-                <div class="color-grid">
-                    <div class="color-picker-wrapper">
-                        <label>Цвет фона:</label>
-                        <input type="color" id="clr_bg" value="#112119" oninput="updatePreview()">
-                    </div>
-                    <div class="color-picker-wrapper">
-                        <label>Основной цвет:</label>
-                        <input type="color" id="clr_gold" value="#d4b572" oninput="updatePreview()">
-                    </div>
-                    <div class="color-picker-wrapper">
-                        <label>Внутренний фон:</label>
-                        <input type="color" id="clr_inner" value="#0b1511" oninput="updatePreview()">
-                    </div>
-                    <div class="color-picker-wrapper">
-                        <label>Приглушенный:</label>
-                        <input type="color" id="clr_dim" value="#9a8451" oninput="updatePreview()">
-                    </div>
-                    <div class="color-picker-wrapper">
-                        <label>Цвет текста:</label>
-                        <input type="color" id="clr_text" value="#d1dad6" oninput="updatePreview()">
-                    </div>
-                    <div class="color-picker-wrapper">
-                        <label>Границы элементов:</label>
-                        <input type="color" id="clr_border" value="#233b2d" oninput="updatePreview()">
-                    </div>
-                    <div class="color-picker-wrapper" style="grid-column: span 2;">
-                        <label>Цвет выделения (Hover):</label>
-                        <input type="color" id="clr_hover" value="#f3d48d" oninput="updatePreview()">
-                    </div>
-                </div>
-            </div>
-
             <div class="action-row">
                 <button class="btn" style="background: var(--bg-inner); color: var(--gold); border: 1px solid var(--gold);" onclick="updatePreview()">🔄 Обновить</button>
                 <button class="btn" id="copyBtn" onclick="copyCode()">📋 Копировать код для Genially</button>
@@ -171,6 +112,7 @@
             <textarea id="outputCode" style="display:none;"></textarea>
         </div>
 
+        <!-- ПРАВАЯ ПАНЕЛЬ -->
         <div class="panel preview-panel">
             <div class="panel-title">Предпросмотр игры</div>
             <iframe id="previewFrame" srcdoc=""></iframe>
@@ -253,14 +195,6 @@
 
             const dataStr = JSON.stringify(task);
 
-            const colBg = document.getElementById('clr_bg').value;
-            const colGold = document.getElementById('clr_gold').value;
-            const colInner = document.getElementById('clr_inner').value;
-            const colDim = document.getElementById('clr_dim').value;
-            const colText = document.getElementById('clr_text').value;
-            const colBorder = document.getElementById('clr_border').value;
-            const colHover = document.getElementById('clr_hover').value;
-
             const htmlCode = `<!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -268,86 +202,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --game-bg: ${colBg};
-            --game-gold: ${colGold};
-            --game-gold-dim: ${colDim};
-            --game-inner: ${colInner};
-            --game-text: ${colText};
-            --game-border: ${colBorder};
-            --game-hover: ${colHover};
-        }
-
-        /* ИСПРАВЛЕНИЕ: Жесткая привязка к краям Genially, сплошной фон и защита кликов */
+        /* Адаптивный фикс для Genially: убраны конфликтующие центрирования */
         html, body { 
-            width: 100%; height: 100%; margin: 0; padding: 0; 
-            background: var(--game-bg) !important; /* Убрано transparent, чтобы клики не проваливались */
-            color: var(--game-text); font-family: 'Playfair Display', serif;
-            box-sizing: border-box; overflow: hidden; position: fixed; top: 0; left: 0;
+            width: 100%; margin: 0; padding: 0; 
+            background: transparent !important; color: #d1dad6; font-family: 'Playfair Display', serif;
+            box-sizing: border-box; overflow-x: hidden;
         }
-        
         .wrapper { 
-            width: 100%; height: 100%;
-            padding: 0 !important; margin: 0 !important; box-sizing: border-box; 
-            display: flex; flex-direction: column; align-items: stretch; justify-content: stretch;
+            width: 100%; padding: 15px !important; box-sizing: border-box; 
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
         }
-
         .card {
-            background: transparent !important; 
-            border: none !important;
-            padding: 15px 20px !important; 
-            width: 100%; 
-            height: 100%; 
-            box-sizing: border-box;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            overflow-y: auto;
-            overflow-x: hidden;
-            position: relative;
-            z-index: 10; /* Защита от перекрытия слоями Genially */
+            background: #112119 !important; border: 2px solid #233b2d !important; border-radius: 12px !important; padding: 25px !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(212,181,114,0.1) !important; width: 100%; max-width: 750px; box-sizing: border-box;
+            display: flex; flex-direction: column; align-items: center; margin: 0 auto;
         }
-
-        .card::-webkit-scrollbar { width: 6px; }
-        .card::-webkit-scrollbar-track { background: var(--game-inner); }
-        .card::-webkit-scrollbar-thumb { background: var(--game-gold-dim); border-radius: 3px; }
-
-        h2 { font-family: 'Cinzel', serif; color: var(--game-gold); margin-top: 0; margin-bottom: 10px; text-align: center; font-size: 18px; text-transform: uppercase; letter-spacing: 1px;}
-        .word-title { font-size: 24px; font-weight: bold; color: var(--game-hover); text-align: center; margin-bottom: 15px; letter-spacing: 2px;}
+        h2 { font-family: 'Cinzel', serif; color: #d4b572; margin-top: 0; text-align: center; font-size: 22px; text-transform: uppercase;}
+        .word-title { font-size: 28px; font-weight: bold; color: #f3d48d; text-align: center; margin-bottom: 20px; letter-spacing: 2px;}
         
-        input { background: var(--game-inner); border: 1px solid var(--game-border) !important; color: var(--game-text); padding: 6px; border-radius: 4px; font-size: 14px; font-family: 'Playfair Display', serif; box-sizing: border-box; width: 100%; min-width: 0;}
-        input:focus { outline: none; border-color: var(--game-gold) !important; }
+        input { background: #0b1511; border: 1px solid #233b2d !important; color: #d1dad6; padding: 8px; border-radius: 4px; font-size: 15px; font-family: 'Playfair Display', serif; box-sizing: border-box; width: 100%; min-width: 0;}
+        input:focus { outline: none; border-color: #d4b572 !important; }
         
-        .btn { background: var(--game-gold) !important; color: var(--game-inner) !important; border: none !important; padding: 10px 15px !important; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 6px !important; width: 100%; max-width: 400px; margin-top: auto; transition: 0.3s; font-size: 14px; box-sizing: border-box; flex-shrink: 0;}
-        .btn:hover { background: var(--game-hover) !important; }
-        .msg { margin-top: 10px; font-weight: bold; font-family: 'Cinzel', serif; text-align: center; font-size: 16px; min-height: 20px;}
+        .btn { background: #d4b572 !important; color: #0a110e !important; border: none !important; padding: 15px 20px !important; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 6px !important; width: 100%; margin-top: 20px; transition: 0.3s; font-size: 16px; box-sizing: border-box;}
+        .btn:hover { background: #f3d48d !important; }
+        .msg { margin-top: 15px; font-weight: bold; font-family: 'Cinzel', serif; text-align: center; font-size: 18px;}
 
         /* Фонетика */
-        .ph-row { display: flex; gap: 8px; margin-bottom: 6px; align-items: center; flex-wrap: nowrap; width: 100%; max-width: 700px; justify-content: center; box-sizing: border-box;}
-        .ph-l { font-weight: bold; font-size: 18px; min-width: 25px; text-align: center; color: var(--game-gold);}
-        .ph-s { width: 50px; min-width: 45px; text-align: center; font-weight: bold; }
+        .ph-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; flex-wrap: nowrap; width: 100%; justify-content: center; box-sizing: border-box;}
+        .ph-l { font-weight: bold; font-size: 20px; min-width: 25px; text-align: center; color: #d4b572;}
+        .ph-s { width: 60px; min-width: 50px; text-align: center; font-weight: bold; }
         .ph-c { flex: 1; width: 100%;}
-        .kb { display: flex; flex-wrap: wrap; gap: 4px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; justify-content: center; margin-bottom: 15px; width: 100%; max-width: 700px; box-sizing: border-box;}
-        .kb-btn { background: var(--game-border); border: 1px solid var(--game-gold-dim) !important; color: var(--game-gold); padding: 4px; min-width: 28px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; box-sizing: border-box; transition: 0.2s;}
-        .kb-btn:active, .kb-btn:hover { background: var(--game-gold); color: var(--game-inner); }
+        .kb { display: flex; flex-wrap: wrap; gap: 6px; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 6px; justify-content: center; margin-bottom: 20px; width: 100%; box-sizing: border-box;}
+        .kb-btn { background: #233b2d; border: 1px solid #9a8451 !important; color: #d4b572; padding: 8px; min-width: 35px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 16px; box-sizing: border-box; transition: 0.2s;}
+        .kb-btn:active { background: #d4b572; color: #000; }
 
         /* Морфемика */
-        .morph-zone { display: flex; font-size: 28px; justify-content: center; margin: 20px 0; letter-spacing: 1px; font-weight: bold; flex-wrap: wrap; width: 100%;}
-        .m-part { position: relative; cursor: pointer; padding: 4px; transition: color 0.2s; margin-top: 15px;}
-        .m-part:hover { color: var(--game-gold); }
-        .m-svg { position: absolute; top: -18px; left: 0; width: 100%; height: 30px; pointer-events: none;}
-        .m-tools { display: flex; gap: 8px !important; justify-content: center; flex-wrap: wrap; margin-bottom: 15px; width: 100%; align-items: center; box-sizing: border-box;}
-        .m-tool { border: 2px solid var(--game-border) !important; padding: 6px 10px !important; cursor: pointer; border-radius: 6px !important; color: var(--game-gold-dim); font-family: 'Cinzel', serif; font-size: 12px; font-weight: bold; text-align: center; transition: 0.2s;}
-        .m-tool.active, .m-tool:hover { background: var(--game-border) !important; color: var(--game-gold) !important; border-color: var(--game-gold) !important; box-shadow: 0 0 10px rgba(212,181,114,0.4) !important; }
-        path { stroke: var(--game-gold); fill: none; stroke-width: 2.5; }
+        .morph-zone { display: flex; font-size: 32px; justify-content: center; margin: 30px 0; letter-spacing: 1px; font-weight: bold; flex-wrap: wrap; width: 100%;}
+        .m-part { position: relative; cursor: pointer; padding: 5px 2px; transition: color 0.2s;}
+        .m-part:hover { color: #d4b572; }
+        .m-svg { position: absolute; top: -20px; left: 0; width: 100%; height: 35px; pointer-events: none;}
+        .m-tools { display: flex; gap: 12px !important; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; width: 100%; align-items: center; box-sizing: border-box;}
+        .m-tool { border: 2px solid #233b2d !important; padding: 10px 15px !important; cursor: pointer; border-radius: 6px !important; color: #9a8451; font-family: 'Cinzel', serif; font-weight: bold; text-align: center;}
+        .m-tool.active { background: #233b2d !important; color: #d4b572 !important; border-color: #d4b572 !important; box-shadow: 0 0 10px rgba(212,181,114,0.4) !important; }
+        path { stroke: #d4b572; fill: none; stroke-width: 2.5; }
 
         /* Морфология */
-        .tag-bank { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 8px; justify-content: center; min-height: 40px; margin-bottom: 15px; width: 100%; max-width: 700px; box-sizing: border-box;}
-        .tag { background: var(--game-border) !important; border: 1px solid var(--game-gold) !important; padding: 5px 10px !important; border-radius: 15px !important; font-size: 13px; cursor: pointer; user-select: none; transition: 0.2s; color: var(--game-hover); text-align: center;}
-        .tag.selected { background: var(--game-gold) !important; color: var(--game-inner) !important; transform: scale(1.05); box-shadow: 0 0 10px rgba(212,181,114,0.6) !important;}
-        .drop-zone { border: 2px dashed var(--game-gold-dim) !important; padding: 8px !important; border-radius: 6px !important; margin-bottom: 8px; min-height: 35px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.2) !important; width: 100%; max-width: 700px; box-sizing: border-box;}
+        .tag-bank { display: flex; flex-wrap: wrap; gap: 10px; padding: 15px; background: rgba(0,0,0,0.5); border-radius: 8px; justify-content: center; min-height: 50px; margin-bottom: 20px; width: 100%; box-sizing: border-box;}
+        .tag { background: #233b2d !important; border: 1px solid #d4b572 !important; padding: 8px 15px !important; border-radius: 20px !important; font-size: 14px; cursor: pointer; user-select: none; transition: 0.2s; color: #f3d48d; text-align: center;}
+        .tag.selected { background: #d4b572 !important; color: #000 !important; transform: scale(1.05); box-shadow: 0 0 15px rgba(212,181,114,0.6) !important;}
+        .drop-zone { border: 2px dashed #9a8451 !important; padding: 15px !important; border-radius: 8px !important; margin-bottom: 15px; min-height: 40px; display: flex; flex-wrap: wrap; gap: 10px; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.2) !important; width: 100%; box-sizing: border-box;}
         .drop-zone:hover { background: rgba(212,181,114,0.1) !important; }
-        .dz-title { font-family: 'Cinzel', serif; color: var(--game-gold-dim); font-size: 11px; width: 100%; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 1px;}
+        .dz-title { font-family: 'Cinzel', serif; color: #9a8451; font-size: 14px; width: 100%; margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -365,15 +270,15 @@
             
             if(data.type === 'phonetic') {
                 h += '<div class="word-title">' + data.word + '</div>';
-                h += '<div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; width:100%; max-width:700px; box-sizing:border-box; margin-bottom:10px;">';
-                h += '<div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Слоги: <input type="text" id="ph_syl" style="max-width:160px;"></div> <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Транскрипция: <input type="text" id="ph_tr" style="max-width:160px;"></div></div>';
-                h += '<div style="color:var(--game-gold-dim); text-align:center; font-size:11px; margin-bottom:5px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
+                h += '<div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; width:100%; box-sizing:border-box; margin-bottom:15px;">';
+                h += '<div style="display:flex; align-items:center; gap:5px; flex:1; min-width:140px; justify-content:center;">Слоги: <input type="text" id="ph_syl" style="max-width:180px;"></div> <div style="display:flex; align-items:center; gap:5px; flex:1; min-width:140px; justify-content:center;">Транскрипция: <input type="text" id="ph_tr" style="max-width:180px;"></div></div>';
+                h += '<div style="color:#9a8451; text-align:center; font-size:12px; margin-bottom:5px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
                 
-                const sounds = ["а","о","у","э","и","ы","б","б'","п","п'","в","в'","ф","ф'","г","г'","к","к'","д","д'","т","т'","ж","ш","з","з'","с","с'","х","х'","ц","ч'","щ'","й'","л","л'","м","м'","н","н'","р","р'"];
+                const sounds = ['а','о','у','э','и','ы','б','б\\'','п','п\\'','в','в\\'','ф','ф\\'','г','г\\'','к','к\\'','д','д\\'','т','т\\'','ж','ш','з','з\\'','с','с\\'','х','х\\'','ц','ч\\'','щ\\'','й\\'','л','л\\'','м','м\\'','н','н\\'','р','р\\''];
                 h += '<div class="kb">';
                 sounds.forEach(s => {
                     let safeS = s.replace(/'/g, "&#39;");
-                    h += '<div class="kb-btn" onclick="insSound(&quot;['+safeS+']&quot;)">'+s+'</div>';
+                    h += '<div class="kb-btn" data-s="['+safeS+']" onclick="insSound(this.getAttribute(\\'data-s\\'))">'+s+'</div>';
                 });
                 h += '</div>';
 
@@ -384,8 +289,7 @@
                 });
             } 
             else if(data.type === 'morphemic') {
-                h += '<div class="word-title" style="margin-bottom:5px;">' + data.rows.map(r => r.p).join('') + '</div>';
-                h += '<div style="text-align:center; color:var(--game-gold-dim); margin-bottom:15px; font-size:13px; width: 100%;">Выберите инструмент и кликните на часть слова</div>';
+                h += '<div style="text-align:center; color:#9a8451; margin-bottom:15px; width: 100%;">Выберите инструмент и кликните на часть слова</div>';
                 h += '<div class="m-tools"><div class="m-tool" data-t="prefix">Приставка</div><div class="m-tool" data-t="root">Корень</div><div class="m-tool" data-t="suffix">Суффикс</div><div class="m-tool" data-t="ending">Окончание</div><div class="m-tool" data-t="postfix">Постфикс</div></div>';
                 h += '<div class="morph-zone">';
                 data.rows.forEach((r, i) => h += '<div class="m-part" data-i="'+i+'">' + r.p + '</div>');
@@ -393,7 +297,7 @@
             }
             else if(data.type === 'morphology') {
                 h += '<div class="word-title">' + data.word + '</div>';
-                h += '<div style="text-align:center; color:var(--game-gold-dim); margin-bottom:10px; font-size:13px; width: 100%;">Нажмите на плашку, затем на нужное поле ниже, чтобы переместить её.</div>';
+                h += '<div style="text-align:center; color:#9a8451; margin-bottom:15px; font-size:14px; width: 100%;">Нажмите на плашку, затем на нужное поле ниже, чтобы переместить её.</div>';
                 
                 let allTags = [];
                 [data.pos, data.base, data.role].forEach(t => { if(t.trim()) allTags.push(t.trim()); });
@@ -488,7 +392,7 @@
             }
 
             const msg = document.getElementById('msg');
-            msg.style.color = ok ? 'var(--game-gold)' : '#a30000';
+            msg.style.color = ok ? '#d4b572' : '#a30000';
             msg.innerText = ok ? 'ВЕЛИКОЛЕПНО! Разбор выполнен верно. 🏆' : 'Обнаружены ошибки. Проверьте всё внимательно! ❌';
         }
 
