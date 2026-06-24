@@ -202,19 +202,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Адаптивный фикс для Genially */
+        /* Адаптивный фикс для Genially: прозрачный фон фрейма и правильное выравнивание */
         html, body { 
-            width: 100%; height: 100%; margin: 0; padding: 0; 
-            background: #0a110e; color: #d1dad6; font-family: 'Playfair Display', serif;
-            box-sizing: border-box; overflow: auto;
+            width: 100%; min-height: 100vh; margin: 0; padding: 0; 
+            background: transparent !important; color: #d1dad6; font-family: 'Playfair Display', serif;
+            box-sizing: border-box; overflow-x: hidden;
         }
         .wrapper { 
-            width: 100%; min-height: 100%; padding: 10px; box-sizing: border-box; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 100%; min-height: 100vh; padding: 10px; box-sizing: border-box; 
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
         }
         .card {
             background: #112119; border: 2px solid #233b2d; border-radius: 12px; padding: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.9); width: 100%; max-width: 800px; box-sizing: border-box;
+            display: flex; flex-direction: column; align-items: center;
         }
         h2 { font-family: 'Cinzel', serif; color: #d4b572; margin-top: 0; text-align: center; font-size: 22px; text-transform: uppercase;}
         .word-title { font-size: 28px; font-weight: bold; color: #f3d48d; text-align: center; margin-bottom: 20px; letter-spacing: 2px;}
@@ -227,29 +228,29 @@
         .msg { margin-top: 15px; font-weight: bold; font-family: 'Cinzel', serif; text-align: center; font-size: 18px;}
 
         /* Фонетика */
-        .ph-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; flex-wrap: wrap;}
+        .ph-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; flex-wrap: wrap; width: 100%; justify-content: center;}
         .ph-l { font-weight: bold; font-size: 20px; width: 25px; text-align: center; color: #d4b572;}
         .ph-s { width: 60px; text-align: center; font-weight: bold; }
         .ph-c { flex: 1; min-width: 200px;}
-        .kb { display: flex; flex-wrap: wrap; gap: 5px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; justify-content: center; margin-bottom: 20px;}
+        .kb { display: flex; flex-wrap: wrap; gap: 5px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; justify-content: center; margin-bottom: 20px; width: 100%; box-sizing: border-box;}
         .kb-btn { background: #233b2d; border: 1px solid #9a8451; color: #d4b572; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px;}
         .kb-btn:active { background: #d4b572; color: #000; }
 
         /* Морфемика */
-        .morph-zone { display: flex; font-size: 32px; justify-content: center; margin: 30px 0; letter-spacing: 1px; font-weight: bold; flex-wrap: wrap;}
+        .morph-zone { display: flex; font-size: 32px; justify-content: center; margin: 30px 0; letter-spacing: 1px; font-weight: bold; flex-wrap: wrap; width: 100%;}
         .m-part { position: relative; cursor: pointer; padding: 5px 2px; transition: color 0.2s;}
         .m-part:hover { color: #d4b572; }
         .m-svg { position: absolute; top: -20px; left: 0; width: 100%; height: 35px; pointer-events: none;}
-        .m-tools { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;}
+        .m-tools { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; width: 100%;}
         .m-tool { border: 2px solid #233b2d; padding: 8px 15px; cursor: pointer; border-radius: 6px; color: #9a8451; font-family: 'Cinzel', serif; font-weight: bold;}
         .m-tool.active { background: #233b2d; color: #d4b572; border-color: #d4b572; box-shadow: 0 0 10px rgba(212,181,114,0.4); }
         path { stroke: #d4b572; fill: none; stroke-width: 2.5; }
 
-        /* Морфология (Кликовая система распределения) */
-        .tag-bank { display: flex; flex-wrap: wrap; gap: 10px; padding: 15px; background: rgba(0,0,0,0.5); border-radius: 8px; justify-content: center; min-height: 50px; margin-bottom: 20px;}
+        /* Морфология */
+        .tag-bank { display: flex; flex-wrap: wrap; gap: 10px; padding: 15px; background: rgba(0,0,0,0.5); border-radius: 8px; justify-content: center; min-height: 50px; margin-bottom: 20px; width: 100%; box-sizing: border-box;}
         .tag { background: #233b2d; border: 1px solid #d4b572; padding: 8px 15px; border-radius: 20px; font-size: 14px; cursor: pointer; user-select: none; transition: 0.2s; color: #f3d48d;}
         .tag.selected { background: #d4b572; color: #000; transform: scale(1.05); box-shadow: 0 0 15px rgba(212,181,114,0.6);}
-        .drop-zone { border: 2px dashed #9a8451; padding: 15px; border-radius: 8px; margin-bottom: 15px; min-height: 40px; display: flex; flex-wrap: wrap; gap: 10px; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.2);}
+        .drop-zone { border: 2px dashed #9a8451; padding: 15px; border-radius: 8px; margin-bottom: 15px; min-height: 40px; display: flex; flex-wrap: wrap; gap: 10px; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.2); width: 100%; box-sizing: border-box;}
         .drop-zone:hover { background: rgba(212,181,114,0.1); }
         .dz-title { font-family: 'Cinzel', serif; color: #9a8451; font-size: 14px; width: 100%; margin-bottom: 5px; }
     </style>
@@ -269,15 +270,16 @@
             
             if(data.type === 'phonetic') {
                 h += '<div class="word-title">' + data.word + '</div>';
-                h += '<div style="text-align:center; margin-bottom:15px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">';
+                h += '<div style="text-align:center; margin-bottom:15px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; width:100%;">';
                 h += '<div>Слоги: <input type="text" id="ph_syl" style="width:150px;"></div> <div>Транскрипция: <input type="text" id="ph_tr" style="width:150px;"></div></div>';
                 h += '<div style="color:#9a8451; text-align:center; font-size:12px; margin-bottom:5px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
                 
                 const sounds = ['а','о','у','э','и','ы','б','б\\'','п','п\\'','в','в\\'','ф','ф\\'','г','г\\'','к','к\\'','д','д\\'','т','т\\'','ж','ш','з','з\\'','с','с\\'','х','х\\'','ц','ч\\'','щ\\'','й\\'','л','л\\'','м','м\\'','н','н\\'','р','р\\''];
                 h += '<div class="kb">';
                 sounds.forEach(s => {
-                    let safeS = s.replace(/'/g, "&apos;");
-                    h += '<div class="kb-btn" onclick="insSound(\\'['+safeS+']\\')">'+s+'</div>';
+                    // Используем HTML-код вместо реального апострофа для атрибута data
+                    let safeS = s.replace(/'/g, "&#39;");
+                    h += '<div class="kb-btn" data-s="['+safeS+']" onclick="insSound(this.getAttribute(\\'data-s\\'))">'+s+'</div>';
                 });
                 h += '</div>';
 
@@ -288,7 +290,7 @@
                 });
             } 
             else if(data.type === 'morphemic') {
-                h += '<div style="text-align:center; color:#9a8451; margin-bottom:15px;">Выберите инструмент и кликните на часть слова</div>';
+                h += '<div style="text-align:center; color:#9a8451; margin-bottom:15px; width: 100%;">Выберите инструмент и кликните на часть слова</div>';
                 h += '<div class="m-tools"><div class="m-tool" data-t="prefix">Приставка</div><div class="m-tool" data-t="root">Корень</div><div class="m-tool" data-t="suffix">Суффикс</div><div class="m-tool" data-t="ending">Окончание</div><div class="m-tool" data-t="postfix">Постфикс</div></div>';
                 h += '<div class="morph-zone">';
                 data.rows.forEach((r, i) => h += '<div class="m-part" data-i="'+i+'">' + r.p + '</div>');
@@ -296,7 +298,7 @@
             }
             else if(data.type === 'morphology') {
                 h += '<div class="word-title">' + data.word + '</div>';
-                h += '<div style="text-align:center; color:#9a8451; margin-bottom:15px; font-size:14px;">Нажмите на плашку, затем на нужное поле ниже, чтобы переместить её.</div>';
+                h += '<div style="text-align:center; color:#9a8451; margin-bottom:15px; font-size:14px; width: 100%;">Нажмите на плашку, затем на нужное поле ниже, чтобы переместить её.</div>';
                 
                 let allTags = [];
                 [data.pos, data.base, data.role].forEach(t => { if(t.trim()) allTags.push(t.trim()); });
