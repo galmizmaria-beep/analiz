@@ -48,7 +48,6 @@
         .action-row { display: flex; gap: 10px; margin-top: 20px; }
         .hint { font-size: 12px; color: var(--gold-dim); margin-top: 5px; font-style: italic;}
 
-        /* Стили для новых настроек цвета */
         .color-settings {
             margin-top: 25px;
             padding-top: 15px;
@@ -82,7 +81,6 @@
 
     <div class="editor-container">
         
-        <!-- ЛЕВАЯ ПАНЕЛЬ -->
         <div class="panel">
             <div class="panel-title">Настройки задания</div>
             <div class="tabs">
@@ -173,7 +171,6 @@
             <textarea id="outputCode" style="display:none;"></textarea>
         </div>
 
-        <!-- ПРАВАЯ ПАНЕЛЬ -->
         <div class="panel preview-panel">
             <div class="panel-title">Предпросмотр игры</div>
             <iframe id="previewFrame" srcdoc=""></iframe>
@@ -256,7 +253,6 @@
 
             const dataStr = JSON.stringify(task);
 
-            // Получение цветов из редактора
             const colBg = document.getElementById('clr_bg').value;
             const colGold = document.getElementById('clr_gold').value;
             const colInner = document.getElementById('clr_inner').value;
@@ -282,23 +278,23 @@
             --game-hover: ${colHover};
         }
 
+        /* ИСПРАВЛЕНИЕ: Жесткая привязка к краям Genially без отступов */
         html, body { 
             width: 100%; height: 100%; margin: 0; padding: 0; 
             background: transparent !important; color: var(--game-text); font-family: 'Playfair Display', serif;
-            box-sizing: border-box; overflow: hidden;
+            box-sizing: border-box; overflow: hidden; position: relative;
         }
         
         .wrapper { 
-            width: 100vw; height: 100vh; padding: 0 !important; margin: 0 !important; box-sizing: border-box; 
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            padding: 0 !important; margin: 0 !important; box-sizing: border-box; 
             display: flex; flex-direction: column; align-items: stretch; justify-content: stretch;
         }
 
-        /* Карточка теперь занимает 100% высоты слайда без отступов */
         .card {
             background: var(--game-bg) !important; 
             border: none !important;
-            padding: 24px !important;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.8) !important; 
+            padding: 15px 20px !important; /* Уменьшены отступы, чтобы влезало */
             width: 100%; 
             height: 100%; 
             box-sizing: border-box;
@@ -306,51 +302,51 @@
             flex-direction: column; 
             align-items: center; 
             overflow-y: auto;
+            overflow-x: hidden;
             position: relative;
         }
 
-        /* Красивый скроллбар для идеального совпадения по высоте */
-        .card::-webkit-scrollbar { width: 8px; }
+        .card::-webkit-scrollbar { width: 6px; }
         .card::-webkit-scrollbar-track { background: var(--game-inner); }
-        .card::-webkit-scrollbar-thumb { background: var(--game-gold-dim); border-radius: 4px; }
-        .card::-webkit-scrollbar-thumb:hover { background: var(--game-gold); }
+        .card::-webkit-scrollbar-thumb { background: var(--game-gold-dim); border-radius: 3px; }
 
-        h2 { font-family: 'Cinzel', serif; color: var(--game-gold); margin-top: 0; text-align: center; font-size: 22px; text-transform: uppercase; letter-spacing: 1px;}
-        .word-title { font-size: 28px; font-weight: bold; color: var(--game-hover); text-align: center; margin-bottom: 20px; letter-spacing: 2px;}
+        /* ИСПРАВЛЕНИЕ: Размеры шрифтов немного уменьшены для пропорций слайда */
+        h2 { font-family: 'Cinzel', serif; color: var(--game-gold); margin-top: 0; margin-bottom: 10px; text-align: center; font-size: 18px; text-transform: uppercase; letter-spacing: 1px;}
+        .word-title { font-size: 24px; font-weight: bold; color: var(--game-hover); text-align: center; margin-bottom: 15px; letter-spacing: 2px;}
         
-        input { background: var(--game-inner); border: 1px solid var(--game-border) !important; color: var(--game-text); padding: 8px; border-radius: 4px; font-size: 15px; font-family: 'Playfair Display', serif; box-sizing: border-box; width: 100%; min-width: 0;}
+        input { background: var(--game-inner); border: 1px solid var(--game-border) !important; color: var(--game-text); padding: 6px; border-radius: 4px; font-size: 14px; font-family: 'Playfair Display', serif; box-sizing: border-box; width: 100%; min-width: 0;}
         input:focus { outline: none; border-color: var(--game-gold) !important; }
         
-        .btn { background: var(--game-gold) !important; color: var(--game-inner) !important; border: none !important; padding: 15px 20px !important; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 6px !important; width: 100%; max-width: 400px; margin-top: auto; transition: 0.3s; font-size: 16px; box-sizing: border-box; flex-shrink: 0;}
+        .btn { background: var(--game-gold) !important; color: var(--game-inner) !important; border: none !important; padding: 10px 15px !important; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 6px !important; width: 100%; max-width: 400px; margin-top: auto; transition: 0.3s; font-size: 14px; box-sizing: border-box; flex-shrink: 0;}
         .btn:hover { background: var(--game-hover) !important; }
-        .msg { margin-top: 15px; font-weight: bold; font-family: 'Cinzel', serif; text-align: center; font-size: 18px; min-height: 25px;}
+        .msg { margin-top: 10px; font-weight: bold; font-family: 'Cinzel', serif; text-align: center; font-size: 16px; min-height: 20px;}
 
         /* Фонетика */
-        .ph-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; flex-wrap: nowrap; width: 100%; max-width: 650px; justify-content: center; box-sizing: border-box;}
-        .ph-l { font-weight: bold; font-size: 20px; min-width: 25px; text-align: center; color: var(--game-gold);}
-        .ph-s { width: 60px; min-width: 50px; text-align: center; font-weight: bold; }
+        .ph-row { display: flex; gap: 8px; margin-bottom: 6px; align-items: center; flex-wrap: nowrap; width: 100%; max-width: 700px; justify-content: center; box-sizing: border-box;}
+        .ph-l { font-weight: bold; font-size: 18px; min-width: 25px; text-align: center; color: var(--game-gold);}
+        .ph-s { width: 50px; min-width: 45px; text-align: center; font-weight: bold; }
         .ph-c { flex: 1; width: 100%;}
-        .kb { display: flex; flex-wrap: wrap; gap: 6px; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 6px; justify-content: center; margin-bottom: 20px; width: 100%; max-width: 650px; box-sizing: border-box;}
-        .kb-btn { background: var(--game-border); border: 1px solid var(--game-gold-dim) !important; color: var(--game-gold); padding: 6px; min-width: 32px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; box-sizing: border-box; transition: 0.2s;}
+        .kb { display: flex; flex-wrap: wrap; gap: 4px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; justify-content: center; margin-bottom: 15px; width: 100%; max-width: 700px; box-sizing: border-box;}
+        .kb-btn { background: var(--game-border); border: 1px solid var(--game-gold-dim) !important; color: var(--game-gold); padding: 4px; min-width: 28px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; box-sizing: border-box; transition: 0.2s;}
         .kb-btn:active, .kb-btn:hover { background: var(--game-gold); color: var(--game-inner); }
 
         /* Морфемика */
-        .morph-zone { display: flex; font-size: 32px; justify-content: center; margin: 25px 0; letter-spacing: 1px; font-weight: bold; flex-wrap: wrap; width: 100%;}
-        .m-part { position: relative; cursor: pointer; padding: 5px 4px; transition: color 0.2s; margin-top: 15px;}
+        .morph-zone { display: flex; font-size: 28px; justify-content: center; margin: 20px 0; letter-spacing: 1px; font-weight: bold; flex-wrap: wrap; width: 100%;}
+        .m-part { position: relative; cursor: pointer; padding: 4px; transition: color 0.2s; margin-top: 15px;}
         .m-part:hover { color: var(--game-gold); }
-        .m-svg { position: absolute; top: -20px; left: 0; width: 100%; height: 35px; pointer-events: none;}
+        .m-svg { position: absolute; top: -18px; left: 0; width: 100%; height: 30px; pointer-events: none;}
         .m-tools { display: flex; gap: 8px !important; justify-content: center; flex-wrap: wrap; margin-bottom: 15px; width: 100%; align-items: center; box-sizing: border-box;}
-        .m-tool { border: 2px solid var(--game-border) !important; padding: 8px 12px !important; cursor: pointer; border-radius: 6px !important; color: var(--game-gold-dim); font-family: 'Cinzel', serif; font-size: 13px; font-weight: bold; text-align: center; transition: 0.2s;}
+        .m-tool { border: 2px solid var(--game-border) !important; padding: 6px 10px !important; cursor: pointer; border-radius: 6px !important; color: var(--game-gold-dim); font-family: 'Cinzel', serif; font-size: 12px; font-weight: bold; text-align: center; transition: 0.2s;}
         .m-tool.active, .m-tool:hover { background: var(--game-border) !important; color: var(--game-gold) !important; border-color: var(--game-gold) !important; box-shadow: 0 0 10px rgba(212,181,114,0.4) !important; }
         path { stroke: var(--game-gold); fill: none; stroke-width: 2.5; }
 
         /* Морфология */
-        .tag-bank { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; background: rgba(0,0,0,0.5); border-radius: 8px; justify-content: center; min-height: 50px; margin-bottom: 20px; width: 100%; max-width: 650px; box-sizing: border-box;}
-        .tag { background: var(--game-border) !important; border: 1px solid var(--game-gold) !important; padding: 6px 12px !important; border-radius: 20px !important; font-size: 13px; cursor: pointer; user-select: none; transition: 0.2s; color: var(--game-hover); text-align: center;}
-        .tag.selected { background: var(--game-gold) !important; color: var(--game-inner) !important; transform: scale(1.05); box-shadow: 0 0 15px rgba(212,181,114,0.6) !important;}
-        .drop-zone { border: 2px dashed var(--game-gold-dim) !important; padding: 12px !important; border-radius: 8px !important; margin-bottom: 12px; min-height: 40px; display: flex; flex-wrap: wrap; gap: 8px; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.2) !important; width: 100%; max-width: 650px; box-sizing: border-box;}
+        .tag-bank { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 8px; justify-content: center; min-height: 40px; margin-bottom: 15px; width: 100%; max-width: 700px; box-sizing: border-box;}
+        .tag { background: var(--game-border) !important; border: 1px solid var(--game-gold) !important; padding: 5px 10px !important; border-radius: 15px !important; font-size: 13px; cursor: pointer; user-select: none; transition: 0.2s; color: var(--game-hover); text-align: center;}
+        .tag.selected { background: var(--game-gold) !important; color: var(--game-inner) !important; transform: scale(1.05); box-shadow: 0 0 10px rgba(212,181,114,0.6) !important;}
+        .drop-zone { border: 2px dashed var(--game-gold-dim) !important; padding: 8px !important; border-radius: 6px !important; margin-bottom: 8px; min-height: 35px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.2) !important; width: 100%; max-width: 700px; box-sizing: border-box;}
         .drop-zone:hover { background: rgba(212,181,114,0.1) !important; }
-        .dz-title { font-family: 'Cinzel', serif; color: var(--game-gold-dim); font-size: 12px; width: 100%; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;}
+        .dz-title { font-family: 'Cinzel', serif; color: var(--game-gold-dim); font-size: 11px; width: 100%; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 1px;}
     </style>
 </head>
 <body>
@@ -368,15 +364,16 @@
             
             if(data.type === 'phonetic') {
                 h += '<div class="word-title">' + data.word + '</div>';
-                h += '<div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; width:100%; max-width:650px; box-sizing:border-box; margin-bottom:15px;">';
-                h += '<div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center;">Слоги: <input type="text" id="ph_syl" style="max-width:180px;"></div> <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center;">Транскрипция: <input type="text" id="ph_tr" style="max-width:180px;"></div></div>';
-                h += '<div style="color:var(--game-gold-dim); text-align:center; font-size:12px; margin-bottom:5px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
+                h += '<div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; width:100%; max-width:700px; box-sizing:border-box; margin-bottom:10px;">';
+                h += '<div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Слоги: <input type="text" id="ph_syl" style="max-width:160px;"></div> <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Транскрипция: <input type="text" id="ph_tr" style="max-width:160px;"></div></div>';
+                h += '<div style="color:var(--game-gold-dim); text-align:center; font-size:11px; margin-bottom:5px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
                 
-                const sounds = ['а','о','у','э','и','ы','б','б\\'','п','п\\'','в','в\\'','ф','ф\\'','г','г\\'','к','к\\'','д','д\\'','т','т\\'','ж','ш','з','з\\'','с','с\\'','х','х\\'','ц','ч\\'','щ\\'','й\\'','л','л\\'','м','м\\'','н','н\\'','р','р\\''];
+                // ИСПРАВЛЕНИЕ: Двойные кавычки для предотвращения ошибки синтаксиса в JS
+                const sounds = ["а","о","у","э","и","ы","б","б'","п","п'","в","в'","ф","ф'","г","г'","к","к'","д","д'","т","т'","ж","ш","з","з'","с","с'","х","х'","ц","ч'","щ'","й'","л","л'","м","м'","н","н'","р","р'"];
                 h += '<div class="kb">';
                 sounds.forEach(s => {
                     let safeS = s.replace(/'/g, "&#39;");
-                    h += '<div class="kb-btn" data-s="['+safeS+']" onclick="insSound(this.getAttribute(\\'data-s\\'))">'+s+'</div>';
+                    h += '<div class="kb-btn" onclick="insSound(&quot;['+safeS+']&quot;)">'+s+'</div>';
                 });
                 h += '</div>';
 
@@ -388,7 +385,7 @@
             } 
             else if(data.type === 'morphemic') {
                 h += '<div class="word-title" style="margin-bottom:5px;">' + data.rows.map(r => r.p).join('') + '</div>';
-                h += '<div style="text-align:center; color:var(--game-gold-dim); margin-bottom:15px; font-size:14px; width: 100%;">Выберите инструмент и кликните на часть слова</div>';
+                h += '<div style="text-align:center; color:var(--game-gold-dim); margin-bottom:15px; font-size:13px; width: 100%;">Выберите инструмент и кликните на часть слова</div>';
                 h += '<div class="m-tools"><div class="m-tool" data-t="prefix">Приставка</div><div class="m-tool" data-t="root">Корень</div><div class="m-tool" data-t="suffix">Суффикс</div><div class="m-tool" data-t="ending">Окончание</div><div class="m-tool" data-t="postfix">Постфикс</div></div>';
                 h += '<div class="morph-zone">';
                 data.rows.forEach((r, i) => h += '<div class="m-part" data-i="'+i+'">' + r.p + '</div>');
@@ -396,7 +393,7 @@
             }
             else if(data.type === 'morphology') {
                 h += '<div class="word-title">' + data.word + '</div>';
-                h += '<div style="text-align:center; color:var(--game-gold-dim); margin-bottom:15px; font-size:14px; width: 100%;">Нажмите на плашку, затем на нужное поле ниже, чтобы переместить её.</div>';
+                h += '<div style="text-align:center; color:var(--game-gold-dim); margin-bottom:10px; font-size:13px; width: 100%;">Нажмите на плашку, затем на нужное поле ниже, чтобы переместить её.</div>';
                 
                 let allTags = [];
                 [data.pos, data.base, data.role].forEach(t => { if(t.trim()) allTags.push(t.trim()); });
