@@ -278,39 +278,30 @@
             --game-hover: ${colHover};
         }
 
-        /* ИСПРАВЛЕНИЕ: Жесткая привязка к краям Genially без отступов */
+        /* ИСПРАВЛЕНИЕ: Фон перенесен на body, чтобы предотвратить обрыв цвета при масштабировании */
         html, body { 
-            width: 100%; height: 100%; margin: 0; padding: 0; 
-            background: transparent !important; color: var(--game-text); font-family: 'Playfair Display', serif;
-            box-sizing: border-box; overflow: hidden; position: relative;
-        }
-        
-        .wrapper { 
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            padding: 0 !important; margin: 0 !important; box-sizing: border-box; 
-            display: flex; flex-direction: column; align-items: stretch; justify-content: stretch;
+            width: 100vw; height: 100vh; margin: 0; padding: 0; 
+            background: var(--game-bg) !important; 
+            color: var(--game-text); font-family: 'Playfair Display', serif;
+            box-sizing: border-box; overflow: hidden; 
         }
 
         .card {
-            background: var(--game-bg) !important; 
-            border: none !important;
-            padding: 15px 20px !important; /* Уменьшены отступы, чтобы влезало */
-            width: 100%; 
-            height: 100%; 
+            width: 100vw; 
+            height: 100vh; 
             box-sizing: border-box;
+            padding: 15px 20px !important;
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             overflow-y: auto;
             overflow-x: hidden;
-            position: relative;
         }
 
         .card::-webkit-scrollbar { width: 6px; }
         .card::-webkit-scrollbar-track { background: var(--game-inner); }
         .card::-webkit-scrollbar-thumb { background: var(--game-gold-dim); border-radius: 3px; }
 
-        /* ИСПРАВЛЕНИЕ: Размеры шрифтов немного уменьшены для пропорций слайда */
         h2 { font-family: 'Cinzel', serif; color: var(--game-gold); margin-top: 0; margin-bottom: 10px; text-align: center; font-size: 18px; text-transform: uppercase; letter-spacing: 1px;}
         .word-title { font-size: 24px; font-weight: bold; color: var(--game-hover); text-align: center; margin-bottom: 15px; letter-spacing: 2px;}
         
@@ -350,7 +341,7 @@
     </style>
 </head>
 <body>
-    <div class="wrapper"><div class="card" id="app"></div></div>
+    <div class="card" id="app"></div>
     <script>
         const data = ${dataStr};
         const app = document.getElementById('app');
@@ -368,12 +359,12 @@
                 h += '<div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Слоги: <input type="text" id="ph_syl" style="max-width:160px;"></div> <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Транскрипция: <input type="text" id="ph_tr" style="max-width:160px;"></div></div>';
                 h += '<div style="color:var(--game-gold-dim); text-align:center; font-size:11px; margin-bottom:5px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
                 
-                // ИСПРАВЛЕНИЕ: Двойные кавычки для предотвращения ошибки синтаксиса в JS
                 const sounds = ["а","о","у","э","и","ы","б","б'","п","п'","в","в'","ф","ф'","г","г'","к","к'","д","д'","т","т'","ж","ш","з","з'","с","с'","х","х'","ц","ч'","щ'","й'","л","л'","м","м'","н","н'","р","р'"];
                 h += '<div class="kb">';
                 sounds.forEach(s => {
                     let safeS = s.replace(/'/g, "&#39;");
-                    h += '<div class="kb-btn" onclick="insSound(&quot;['+safeS+']&quot;)">'+s+'</div>';
+                    // ИСПРАВЛЕНИЕ: Использование data-атрибута для защиты от конфликтов кавычек при масштабировании в Genially
+                    h += '<div class="kb-btn" data-val="['+safeS+']" onclick="insSound(this.getAttribute(\\'data-val\\'))">'+s+'</div>';
                 });
                 h += '</div>';
 
