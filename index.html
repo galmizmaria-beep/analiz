@@ -391,20 +391,16 @@ const colHover = document.getElementById('clr_hover').value;
             color: var(--game-gold);}
         .ph-s { width: 50px !important; min-width: 45px !important; text-align: center; font-weight: bold; }
         .ph-c { flex: 1; width: 100%;}
-        .kb { display: flex; flex-wrap: wrap; gap: 4px; background: rgba(0,0,0,0.4);
-            padding: 10px; border-radius: 6px; justify-content: center; margin-bottom: 15px; width: 100%; max-width: 700px;
-            box-sizing: border-box;}
-        .kb-btn { background: var(--game-border); border: 1px solid var(--game-gold-dim) !important; color: var(--game-gold);
-            padding: 4px; min-width: 28px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; box-sizing: border-box;
-            transition: 0.2s;}
-        .kb-btn:active, .kb-btn:hover { background: var(--game-gold); color: var(--game-inner); }
+        .kb { display: flex; flex-wrap: wrap; gap: 6px; background: var(--game-inner); padding: 12px; border: 1px solid var(--game-border); border-radius: 6px; justify-content: center; margin-bottom: 15px; width: 100%; max-width: 700px; box-sizing: border-box;}
+        .kb-btn { background: var(--game-bg); border: 1px solid var(--game-gold-dim) !important; color: var(--game-text); padding: 6px 10px; min-width: 32px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; box-sizing: border-box; transition: 0.2s;}
+        .kb-btn:active, .kb-btn:hover { background: var(--game-gold); color: var(--game-inner); border-color: var(--game-gold) !important; }
 
         /* Морфемика */
-        .morph-zone { display: flex; font-size: 28px; justify-content: center; margin: 20px 0; letter-spacing: 1px; font-weight: bold; flex-wrap: wrap; width: 100%;}
+        .morph-zone { display: flex; font-size: 28px; justify-content: center; margin: 40px 0 20px 0; letter-spacing: 1px; font-weight: bold; flex-wrap: wrap; width: 100%;}
         .m-part { position: relative; cursor: pointer; padding: 4px; transition: color 0.2s; margin-top: 15px;}
         .m-part:hover { color: var(--game-gold); }
         .m-svg { position: absolute; top: -18px; left: 0; width: 100%; height: 30px; pointer-events: none;}
-        .m-tools { display: flex; gap: 8px !important; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; width: 100%; align-items: center; box-sizing: border-box;}
+        .m-tools { display: flex; gap: 8px !important; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; width: 100%; align-items: center; box-sizing: border-box;}
         .m-tool { border: 2px solid var(--game-border) !important; padding: 6px 10px !important; cursor: pointer; border-radius: 6px !important; color: var(--game-gold-dim); font-family: 'Cinzel', serif; font-size: 12px; font-weight: bold; text-align: center; transition: 0.2s;}
         .m-tool.active, .m-tool:hover { background: var(--game-border) !important; color: var(--game-gold) !important; border-color: var(--game-gold) !important; box-shadow: 0 0 10px rgba(212,181,114,0.4) !important; }
         .wrapper path { stroke: var(--game-gold); fill: none; stroke-width: 2.5; }
@@ -426,6 +422,8 @@ const colHover = document.getElementById('clr_hover').value;
 
         window.lastInputTarget = null;
         let activeTag = null;
+        window.hoveredPartIndex = null;
+        window.hoveredMorphTag = null;
 
         function normalizeStr(str) {
             return str.toLowerCase().replace(/[,.\\[\\]()]/g, '').replace(/ё/g, 'е').split(/\\s+/).filter(Boolean).sort().join(' ');
@@ -514,6 +512,8 @@ const colHover = document.getElementById('clr_hover').value;
             else if(data.type === 'morphology') {
                 document.querySelectorAll('.tag').forEach(tag => {
                     tag.addEventListener('click', function(e) { handleTagClick(this, e); });
+                    tag.addEventListener('mouseenter', () => window.hoveredMorphTag = tag);
+                    tag.addEventListener('mouseleave', () => window.hoveredMorphTag = null);
                 });
                 document.querySelectorAll('.drop-zone, #bank').forEach(zone => {
                     zone.addEventListener('click', function() { handleZoneClick(this); });
@@ -525,7 +525,6 @@ const colHover = document.getElementById('clr_hover').value;
         
         function initMorphemic() {
             userParts = data.rows.map(() => '');
-            let hoveredPartIndex = null;
 
             document.querySelectorAll('.m-tool').forEach(t => t.addEventListener('click', function() {
                 document.querySelectorAll('.m-tool').forEach(ti => ti.classList.remove('active'));
@@ -533,8 +532,8 @@ const colHover = document.getElementById('clr_hover').value;
             }));
 
             document.querySelectorAll('.m-part').forEach(p => {
-                p.addEventListener('mouseenter', () => hoveredPartIndex = p.dataset.i);
-                p.addEventListener('mouseleave', () => hoveredPartIndex = null);
+                p.addEventListener('mouseenter', () => window.hoveredPartIndex = p.dataset.i);
+                p.addEventListener('mouseleave', () => window.hoveredPartIndex = null);
 
                 p.addEventListener('click', function() {
                     if(!selTool) return;
@@ -552,19 +551,6 @@ const colHover = document.getElementById('clr_hover').value;
                     this.innerHTML += svg;
                 });
             });
-
-            document.onkeydown = function(e) {
-                if(e.key === 'Delete' || e.key === 'Backspace') {
-                    if(hoveredPartIndex !== null) {
-                        userParts[hoveredPartIndex] = '';
-                        let partEl = document.querySelector('.m-part[data-i="'+hoveredPartIndex+'"]');
-                        if(partEl) {
-                            let old = partEl.querySelector('svg');
-                            if(old) old.remove();
-                        }
-                    }
-                }
-            };
         }
 
         function handleTagClick(tag, e) {
@@ -619,6 +605,27 @@ const colHover = document.getElementById('clr_hover').value;
                 msg.innerText = ok ? 'ВЕЛИКОЛЕПНО! Разбор выполнен верно. 🏆' : 'Обнаружены ошибки. Проверьте всё внимательно! ❌';
             }, 150);
         }
+
+        document.onkeydown = function(e) {
+            if(e.key === 'Delete' || e.key === 'Backspace') {
+                if(data.type === 'morphemic') {
+                    if(window.hoveredPartIndex !== null && window.hoveredPartIndex !== undefined) {
+                        userParts[window.hoveredPartIndex] = '';
+                        let partEl = document.querySelector('.m-part[data-i="'+window.hoveredPartIndex+'"]');
+                        if(partEl) {
+                            let old = partEl.querySelector('svg');
+                            if(old) old.remove();
+                        }
+                    }
+                } else if(data.type === 'morphology') {
+                    if(window.hoveredMorphTag && window.hoveredMorphTag.parentElement.classList.contains('drop-zone')) {
+                        document.getElementById('bank').appendChild(window.hoveredMorphTag);
+                        window.hoveredMorphTag.classList.remove('selected');
+                        if(activeTag === window.hoveredMorphTag) activeTag = null;
+                    }
+                }
+            }
+        };
 
         render();
     ${'<'}/script>
