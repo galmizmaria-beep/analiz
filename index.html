@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лингвистический Конструктор</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a110e;
+            --bg-panel: #112119;
+            --bg-inner: #0b1511;
+            --gold: #d4b572;
+            --gold-dim: #9a8451;
+            --gold-hover: #f3d48d;
+            --text-light: #d1dad6;
+            --border-color: #233b2d;
+            --font-title: 'Cinzel', serif;
+            --font-text: 'Playfair Display', serif;
+        }
+
+        body {
+            margin: 0; padding: 20px;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            font-family: var(--font-text);
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-family: var(--font-title);
+            color: var(--gold);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle { color: var(--gold-dim); margin-bottom: 25px; text-align: center; font-style: italic; }
+
+        .tabs {
+            display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--gold-dim);
+            color: var(--gold);
+            padding: 10px 25px;
+            font-family: var(--font-title);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--gold);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px rgba(212, 181, 114, 0.3);
+        }
+
+        .container {
+            display: flex; gap: 20px; max-width: 1200px; width: 100%; justify-content: center; flex-wrap: wrap;
+        }
+
+        .panel {
+            background: var(--bg-panel);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            flex: 1; min-width: 300px; max-width: 600px;
+        }
+
+        .panel-title {
+            font-family: var(--font-title);
+            color: var(--gold);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px; margin-top: 0; margin-bottom: 20px;
+            font-size: 18px; text-align: center;
+        }
+
+        label { display: block; margin: 15px 0 5px; font-family: var(--font-title); font-size: 12px; color: var(--gold-dim); letter-spacing: 1px;}
+        
+        input, select, textarea {
+            width: 100%; padding: 10px;
+            background: var(--bg-inner);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            font-family: var(--font-text);
+            font-size: 16px; box-sizing: border-box;
+            border-radius: 4px;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--gold); }
+
+        .btn {
+            background: var(--gold); border: none; color: var(--bg-dark);
+            padding: 12px 20px; font-family: var(--font-title); font-weight: bold;
+            border-radius: 4px; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 15px;
+        }
+        .btn:hover { background: var(--gold-hover); }
+
+        /* Морфемика */
+        .morph-part { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; background: var(--bg-inner); padding: 10px; border: 1px solid var(--border-color); }
+        .morph-part input { width: 40%; }
+        .morph-part select { width: 60%; }
+
+        /* Фонетика */
+        .phon-row { display: flex; gap: 5px; margin-bottom: 10px; }
+        .phon-row input { width: 15%; text-align: center; font-weight: bold; }
+        .phon-row select { width: 85%; }
+
+        /* Иконки морфем */
+        .svg-icon { width: 30px; height: 30px; stroke: var(--gold); fill: none; stroke-width: 2; }
+        
+        .section-content { display: none; }
+        .section-content.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <h1>Глубинный Анализ</h1>
+    <div class="subtitle">Лингвистический инструмент для преподавателей</div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('phonetic')">Фонетика</button>
+        <button class="tab-btn" onclick="switchTab('morphemic')">Морфемика</button>
+        <button class="tab-btn" onclick="switchTab('morphology')">Морфология</button>
+    </div>
+
+    <div class="container">
+        <!-- ПАНЕЛЬ НАСТРОЕК -->
+        <div class="panel">
+            <!-- 1. ФОНЕТИКА -->
+            <div id="tab-phonetic" class="section-content active">
+                <div class="panel-title">Фонетический разбор</div>
+                <label>Слово:</label>
+                <input type="text" id="phonWord" placeholder="Например: ёлка">
+                <label>Транскрипция (в квадратных скобках):</label>
+                <input type="text" id="phonTrans" placeholder="[й' о л к а]">
+                
+                <label>Характеристика звуков:</label>
+                <div id="phonContainer"></div>
+                <button class="btn" style="background: transparent; border: 1px solid var(--gold); color: var(--gold);" onclick="addPhonRow()">+ Добавить букву и звук</button>
+            </div>
+
+            <!-- 2. МОРФЕМИКА -->
+            <div id="tab-morphemic" class="section-content">
+                <div class="panel-title">Морфемный разбор</div>
+                <label>Введите слово (целиком для отображения ученику):</label>
+                <input type="text" id="morphWord" placeholder="Например: подснежники">
+                
+                <label>Разбейте на морфемы (по частям):</label>
+                <div id="morphemicContainer"></div>
+                <button class="btn" style="background: transparent; border: 1px solid var(--gold); color: var(--gold);" onclick="addMorphRow()">+ Добавить часть слова</button>
+            </div>
+
+            <!-- 3. МОРФОЛОГИЯ -->
+            <div id="tab-morphology" class="section-content">
+                <div class="panel-title">Морфологический разбор</div>
+                <label>Разбираемое слово (из текста):</label>
+                <input type="text" id="morphoWord" placeholder="Например: красивым">
+                <label>Начальная форма (Н.ф.):</label>
+                <input type="text" id="morphoBase" placeholder="красивый">
+                
+                <label>Часть речи:</label>
+                <select id="morphoPos" onchange="updateMorphoFields()">
+                    <option value="noun">Существительное</option>
+                    <option value="adj">Прилагательное</option>
+                    <option value="verb">Глагол</option>
+                </select>
+
+                <div id="morphoDynamicFields" style="margin-top: 15px;">
+                    <!-- Поля будут генерироваться JS в зависимости от части речи -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ПАНЕЛЬ ГЕНЕРАЦИИ -->
+        <div class="panel" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+            <div class="panel-title" style="width: 100%;">Генерация игры</div>
+            <p style="font-size: 14px; color: var(--gold-dim); margin-bottom: 20px;">Настройте правильный ответ слева. Ученик должен будет воссоздать этот разбор. Дизайн игры также выполнен в стиле «Слизерин».</p>
+            
+            <button class="btn" onclick="generateCode()">Сгенерировать код</button>
+            
+            <textarea id="outputCode" style="margin-top: 20px; height: 150px; display: none;" readonly></textarea>
+            <button class="btn" id="copyBtn" style="display: none; background: #233b2d; color: var(--gold);" onclick="copyCode()">Скопировать код</button>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'phonetic';
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+        }
+
+        // --- ЛОГИКА ФОНЕТИКИ ---
+        function addPhonRow() {
+            const div = document.createElement('div');
+            div.className = 'phon-row';
+            div.innerHTML = `
+                <input type="text" placeholder="Б." class="phon-l">
+                <input type="text" placeholder="[З.]" class="phon-s">
+                <select class="phon-char">
+                    <option value="гл, ударный">Гласный, ударный</option>
+                    <option value="гл, безударный">Гласный, безударный</option>
+                    <option value="согл, звонк непарн, сонорн, твёрд парн">Согл, сонорн, твёрд парн</option>
+                    <option value="согл, звонк парн, твёрд парн">Согл, звонк парн, твёрд парн</option>
+                    <option value="согл, звонк парн, мягк парн">Согл, звонк парн, мягк парн</option>
+                    <option value="согл, глух парн, твёрд парн">Согл, глух парн, твёрд парн</option>
+                    <option value="согл, глух парн, мягк парн">Согл, глух парн, мягк парн</option>
+                    <option value="согл, звонк непарн, мягк непарн">Согл, звонк неп, мягк неп (й)</option>
+                    <option value="согл, глух непарн, твёрд непарн">Согл, глух неп, твёрд неп (ш,ж,ц)</option>
+                    <option value="согл, глух непарн, мягк непарн">Согл, глух неп, мягк неп (ч,щ)</option>
+                    <option value="звука не обозначает">Звука не обозначает (ъ, ь)</option>
+                </select>
+                <button onclick="this.parentElement.remove()" style="background:none; border:none; color:#a30000; cursor:pointer;">✖</button>
+            `;
+            document.getElementById('phonContainer').appendChild(div);
+        }
+
+        // --- ЛОГИКА МОРФЕМИКИ ---
+        function addMorphRow() {
+            const div = document.createElement('div');
+            div.className = 'morph-part';
+            div.innerHTML = `
+                <input type="text" placeholder="Часть" class="m-part">
+                <select class="m-type">
+                    <option value="prefix">Приставка</option>
+                    <option value="root">Корень</option>
+                    <option value="suffix">Суффикс</option>
+                    <option value="ending">Окончание</option>
+                    <option value="postfix">Постфикс</option>
+                </select>
+                <button onclick="this.parentElement.remove()" style="background:none; border:none; color:#a30000; cursor:pointer;">✖</button>
+            `;
+            document.getElementById('morphemicContainer').appendChild(div);
+        }
+
+        // --- ЛОГИКА МОРФОЛОГИИ ---
+        function updateMorphoFields() {
+            const pos = document.getElementById('morphoPos').value;
+            const container = document.getElementById('morphoDynamicFields');
+            let html = '';
+
+            if (pos === 'noun') {
+                html = `
+                    <label>Постоянные признаки:</label>
+                    <select id="m_type"><option value="нарицательное">Нарицательное</option><option value="собственное">Собственное</option></select>
+                    <select id="m_anim"><option value="неодушевленное">Неодушевленное</option><option value="одушевленное">Одушевленное</option></select>
+                    <select id="m_gender"><option value="мужской">Мужской род</option><option value="женский">Женский род</option><option value="средний">Средний род</option></select>
+                    <select id="m_decl"><option value="1 склонение">1 склонение</option><option value="2 склонение">2 склонение</option><option value="3 склонение">3 склонение</option><option value="разносклоняемое">Разносклоняемое</option></select>
+                    <label>Непостоянные признаки:</label>
+                    <select id="m_num"><option value="единственное число">Ед. число</option><option value="множественное число">Множ. число</option></select>
+                    <select id="m_case"><option value="Им. п.">Именительный п.</option><option value="Р. п.">Родительный п.</option><option value="Д. п.">Дательный п.</option><option value="В. п.">Винительный п.</option><option value="Т. п.">Творительный п.</option><option value="П. п.">Предложенный п.</option></select>
+                    <label>Синтаксическая роль:</label>
+                    <select id="m_syn"><option value="Подлежащее">Подлежащее</option><option value="Сказуемое">Сказуемое</option><option value="Дополнение">Дополнение</option><option value="Обстоятельство">Обстоятельство</option></select>
+                `;
+            } else if (pos === 'adj') {
+                html = `
+                    <label>Постоянные признаки:</label>
+                    <select id="m_cat"><option value="качественное">Качественное</option><option value="относительное">Относительное</option><option value="притяжательное">Притяжательное</option></select>
+                    <label>Непостоянные признаки:</label>
+                    <select id="m_form"><option value="полная форма">Полная форма</option><option value="краткая форма">Краткая форма</option></select>
+                    <select id="m_num"><option value="единственное число">Ед. число</option><option value="множественное число">Множ. число</option></select>
+                    <select id="m_gender"><option value="мужской">Мужской род</option><option value="женский">Женский род</option><option value="средний">Средний род</option><option value="нет">Нет (мн.ч.)</option></select>
+                    <select id="m_case"><option value="Им. п.">Именительный п.</option><option value="Р. п.">Родительный п.</option><option value="Д. п.">Дательный п.</option><option value="В. п.">Винительный п.</option><option value="Т. п.">Творительный п.</option><option value="П. п.">Предложенный п.</option></select>
+                    <label>Синтаксическая роль:</label>
+                    <select id="m_syn"><option value="Определение">Определение</option><option value="Сказуемое">Сказуемое</option></select>
+                `;
+            } else if (pos === 'verb') {
+                html = `
+                    <label>Постоянные признаки:</label>
+                    <select id="m_vid"><option value="совершенный">Совершенный вид</option><option value="несовершенный">Несовершенный вид</option></select>
+                    <select id="m_conj"><option value="1 спряжение">1 спряжение</option><option value="2 спряжение">2 спряжение</option></select>
+                    <select id="m_trans"><option value="переходный">Переходный</option><option value="непереходный">Непереходный</option></select>
+                    <select id="m_refl"><option value="возвратный">Возвратный</option><option value="невозвратный">Невозвратный</option></select>
+                    <label>Непостоянные признаки:</label>
+                    <select id="m_mood"><option value="изъявительное">Изъявительное</option><option value="условное">Условное</option><option value="повелительное">Повелительное</option></select>
+                    <select id="m_time"><option value="настоящее">Настоящее время</option><option value="прошедшее">Прошедшее время</option><option value="будущее">Будущее время</option><option value="нет">Нет</option></select>
+                    <select id="m_num"><option value="единственное число">Ед. число</option><option value="множественное число">Множ. число</option></select>
+                    <select id="m_syn"><option value="Сказуемое">Сказуемое</option></select>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        // Инициализация при старте
+        addPhonRow(); addPhonRow();
+        addMorphRow(); addMorphRow(); addMorphRow();
+        updateMorphoFields();
+
+        // --- ГЕНЕРАТОР КОДА ---
+        function generateCode() {
+            let taskData = { type: currentTab };
+
+            if (currentTab === 'phonetic') {
+                taskData.word = document.getElementById('phonWord').value;
+                taskData.trans = document.getElementById('phonTrans').value;
+                taskData.letters = [];
+                document.querySelectorAll('.phon-row').forEach(row => {
+                    taskData.letters.push({
+                        l: row.querySelector('.phon-l').value,
+                        s: row.querySelector('.phon-s').value,
+                        c: row.querySelector('.phon-char').value
+                    });
+                });
+            } else if (currentTab === 'morphemic') {
+                taskData.word = document.getElementById('morphWord').value;
+                taskData.parts = [];
+                document.querySelectorAll('.morph-part').forEach(row => {
+                    taskData.parts.push({
+                        p: row.querySelector('.m-part').value,
+                        t: row.querySelector('.m-type').value
+                    });
+                });
+            } else if (currentTab === 'morphology') {
+                taskData.word = document.getElementById('morphoWord').value;
+                taskData.base = document.getElementById('morphoBase').value;
+                taskData.pos = document.getElementById('morphoPos').options[document.getElementById('morphoPos').selectedIndex].text;
+                taskData.attrs = [];
+                document.querySelectorAll('#morphoDynamicFields select').forEach(sel => {
+                    taskData.attrs.push(sel.value);
+                });
+            }
+
+            const dataStr = JSON.stringify(taskData);
+
+            const htmlCode = `<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0; padding: 15px; box-sizing: border-box; width: 100vw; height: 100vh; overflow: hidden;
+            background: #0a110e; /* Слизерин фон */
+            color: #d1dad6; font-family: 'Playfair Display', serif;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .card {
+            background: #112119; border: 2px solid #233b2d; border-radius: 10px; padding: 20px;
+            width: 100%; max-width: 700px; box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            display: flex; flex-direction: column; align-items: center; max-height: 95vh; overflow-y: auto;
+        }
+        h2 { font-family: 'Cinzel', serif; color: #d4b572; margin-top: 0; text-align: center; }
+        .word-title { font-size: 24px; font-weight: bold; color: #f3d48d; margin-bottom: 20px; letter-spacing: 2px;}
+        
+        /* Elements */
+        select, input {
+            background: #0b1511; border: 1px solid #233b2d; color: #d1dad6; font-family: 'Playfair Display', serif;
+            padding: 8px; border-radius: 4px; font-size: 14px;
+        }
+        select:focus { outline: none; border-color: #d4b572; }
+        
+        .btn {
+            background: #d4b572; color: #0a110e; border: none; padding: 10px 20px; font-family: 'Cinzel', serif;
+            font-weight: bold; cursor: pointer; border-radius: 4px; margin-top: 20px; transition: 0.3s;
+        }
+        .btn:hover { background: #f3d48d; }
+        .msg { margin-top: 15px; font-weight: bold; font-family: 'Cinzel', serif; }
+
+        /* Phonetica */
+        .ph-grid { display: grid; grid-template-columns: 30px 40px 1fr; gap: 8px; width: 100%; align-items: center; }
+        .ph-grid input { text-align: center; font-weight: bold;}
+        
+        /* Morphemic */
+        .morph-zone { display: flex; gap: 5px; font-size: 24px; margin-bottom: 20px; }
+        .morph-part { position: relative; cursor: pointer; padding: 10px 5px; }
+        .morph-part:hover { color: #d4b572; }
+        .morph-svg { position: absolute; top: -15px; left: 0; width: 100%; height: 25px; pointer-events: none;}
+        .tools { display: flex; gap: 15px; margin-bottom: 20px; }
+        .tool { border: 1px solid #233b2d; padding: 5px 10px; cursor: pointer; border-radius: 4px; color: #9a8451;}
+        .tool.active { background: #233b2d; color: #d4b572; border-color: #d4b572; }
+        
+        /* SVG paths styling */
+        path { stroke: #d4b572; fill: none; stroke-width: 2.5; }
+
+        /* Morpho */
+        .mo-form { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .mo-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dotted #233b2d; padding-bottom: 5px;}
+    </style>
+</head>
+<body>
+    <div class="card" id="app"></div>
+    <script>
+        const data = ${dataStr};
+        const app = document.getElementById('app');
+
+        function render() {
+            let html = '<h2>' + (data.type==='phonetic'?'Фонетический':data.type==='morphemic'?'Морфемный':'Морфологический') + ' разбор</h2>';
+            
+            if(data.type === 'phonetic') {
+                html += '<div class="word-title">' + data.word + ' ' + (data.trans ? data.trans : '') + '</div><div class="ph-grid">';
+                data.letters.forEach((l, i) => {
+                    html += '<div>'+l.l+'</div> <div><input type="text" id="s_'+i+'"></div> <select id="c_'+i+'">';
+                    html += '<option value="">-- выберите характеристику --</option>';
+                    const opts = ["гл, ударный","гл, безударный","согл, звонк непарн, сонорн, твёрд парн","согл, звонк парн, твёрд парн","согл, звонк парн, мягк парн","согл, глух парн, твёрд парн","согл, глух парн, мягк парн","согл, звонк непарн, мягк непарн","согл, глух непарн, твёрд непарн","согл, глух непарн, мягк непарн","звука не обозначает"];
+                    opts.forEach(o => html += '<option value="'+o+'">'+o+'</option>');
+                    html += '</select>';
+                });
+                html += '</div>';
+            } 
+            else if(data.type === 'morphemic') {
+                html += '<div class="word-title">' + data.word + '</div>';
+                html += '<div style="color:#9a8451; font-size:12px; margin-bottom:10px;">Выберите инструмент и кликайте по частям слова.</div>';
+                html += '<div class="tools" id="tools"><div class="tool" data-t="prefix">Приставка</div><div class="tool" data-t="root">Корень</div><div class="tool" data-t="suffix">Суффикс</div><div class="tool" data-t="ending">Окончание</div><div class="tool" data-t="postfix">Постфикс</div></div>';
+                html += '<div class="morph-zone">';
+                data.parts.forEach((p, i) => {
+                    html += '<div class="morph-part" data-i="'+i+'">' + p.p + '</div>';
+                });
+                html += '</div>';
+            }
+            else if(data.type === 'morphology') {
+                html += '<div class="word-title">' + data.word + '</div>';
+                html += '<div class="mo-form">';
+                html += '<div class="mo-row"><span>Часть речи:</span> <span>'+data.pos+'</span></div>';
+                html += '<div class="mo-row"><span>Нач. форма:</span> <input type="text" id="m_base"></div>';
+                data.attrs.forEach((_, i) => {
+                    html += '<div class="mo-row"><span>Признак '+(i+1)+':</span> <select id="ma_'+i+'">';
+                    html += '<option value="">-- выберите --</option>';
+                    // Смешиваем все возможные варианты из оригинала
+                    const allOpts = [...new Set(data.attrs.concat(["нарицательное","собственное","неодушевленное","одушевленное","мужской","женский","средний","1 склонение","2 склонение","3 склонение","единственное число","множественное число","Им. п.","Р. п.","Д. п.","В. п.","Т. п.","П. п.","Подлежащее","Сказуемое","Дополнение","Определение","Обстоятельство","качественное","относительное","притяжательное","совершенный","несовершенный"]))].sort();
+                    allOpts.forEach(o => html += '<option value="'+o+'">'+o+'</option>');
+                    html += '</select></div>';
+                });
+                html += '</div>';
+            }
+
+            html += '<button class="btn" onclick="check()">Проверить</button>';
+            html += '<div id="msg" class="msg"></div>';
+            app.innerHTML = html;
+
+            if(data.type === 'morphemic') initMorphemic();
+        }
+
+        let selTool = null;
+        let userParts = [];
+        
+        function initMorphemic() {
+            userParts = data.parts.map(() => '');
+            document.querySelectorAll('.tool').forEach(t => t.addEventListener('click', function() {
+                document.querySelectorAll('.tool').forEach(ti => ti.classList.remove('active'));
+                this.classList.add('active'); selTool = this.dataset.t;
+            }));
+            
+            document.querySelectorAll('.morph-part').forEach(p => p.addEventListener('click', function() {
+                if(!selTool) return;
+                let idx = this.dataset.i;
+                userParts[idx] = selTool;
+                
+                // Рисуем SVG
+                let svg = '<svg class="morph-svg" preserveAspectRatio="none" viewBox="0 0 100 20">';
+                if(selTool === 'prefix') svg += '<path d="M 10,20 L 10,5 L 90,5"/>';
+                else if(selTool === 'root') svg += '<path d="M 0,20 Q 50,0 100,20"/>';
+                else if(selTool === 'suffix') svg += '<path d="M 0,20 L 50,5 L 100,20"/>';
+                else if(selTool === 'ending') svg += '<path d="M 5,5 h 90 v 15 h -90 z"/>';
+                else if(selTool === 'postfix') svg += '<path d="M 0,20 L 25,5 L 50,20 M 50,20 L 75,5 L 100,20"/>';
+                svg += '</svg>';
+                
+                // Удаляем старый svg если есть
+                let old = this.querySelector('svg');
+                if(old) old.remove();
+                this.innerHTML += svg;
+            }));
+        }
+
+        function check() {
+            let ok = true;
+            if(data.type === 'phonetic') {
+                data.letters.forEach((l, i) => {
+                    if(document.getElementById('s_'+i).value.trim() !== l.s || document.getElementById('c_'+i).value !== l.c) ok = false;
+                });
+            } else if (data.type === 'morphemic') {
+                data.parts.forEach((p, i) => { if(userParts[i] !== p.t) ok = false; });
+            } else if (data.type === 'morphology') {
+                if(document.getElementById('m_base').value.trim().toLowerCase() !== data.base.toLowerCase()) ok = false;
+                data.attrs.forEach((a, i) => { if(document.getElementById('ma_'+i).value !== a) ok = false; });
+            }
+
+            const msg = document.getElementById('msg');
+            msg.style.color = ok ? '#d4b572' : '#a30000';
+            msg.innerText = ok ? 'ВЕЛИКОЛЕПНО! Разбор выполнен верно.' : 'Есть ошибки. Попробуйте исправить.';
+        }
+
+        render();
+    </script>
+</body>
+</html>`;
+
+            document.getElementById('outputCode').value = htmlCode;
+            document.getElementById('outputCode').style.display = 'block';
+            document.getElementById('copyBtn').style.display = 'block';
+        }
+
+        function copyCode() {
+            const copyText = document.getElementById('outputCode');
+            copyText.select();
+            document.execCommand('copy');
+            document.getElementById('copyBtn').innerText = 'СКОПИРОВАНО!';
+            setTimeout(() => { document.getElementById('copyBtn').innerText = 'Скопировать код'; }, 2000);
+        }
+    </script>
+</body>
+</html>
