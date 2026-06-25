@@ -409,11 +409,11 @@ const colHover = document.getElementById('clr_hover').value;
         .kb-btn:active, .kb-btn:hover { background: var(--game-gold); color: var(--game-inner); border-color: var(--game-gold) !important; }
 
         /* Морфемика */
-        .morph-zone { display: flex; font-size: 28px; justify-content: center; margin: 80px 0 20px 0; letter-spacing: 1px; font-weight: bold; flex-wrap: wrap; width: 100%;}
-        .m-part { position: relative; cursor: pointer; padding: 4px; transition: color 0.2s; margin-top: 15px;}
+        .morph-zone { display: flex; font-size: 28px; justify-content: center; margin-top: 50px !important; margin-bottom: 20px !important; letter-spacing: 1px; font-weight: bold; flex-wrap: nowrap; width: 100%; position: relative;}
+        .m-part { position: relative; cursor: pointer; padding: 0 1px !important; margin: 0 !important; transition: color 0.2s;}
         .m-part:hover { color: var(--game-gold); }
-        .m-svg { position: absolute; top: -18px; left: 0; width: 100%; height: 30px; pointer-events: none;}
-        .m-tools { display: flex; gap: 8px !important; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; width: 100%; align-items: center; box-sizing: border-box;}
+        .m-svg { position: absolute; top: -25px !important; left: 0; width: 100%; height: 30px !important; pointer-events: none; overflow: visible !important;}
+        .m-tools { display: flex; gap: 8px !important; justify-content: center; flex-wrap: wrap; margin-bottom: 15px !important; width: 100%; align-items: center; box-sizing: border-box;}
         .m-tool { border: 2px solid var(--game-border) !important; padding: 6px 10px !important; cursor: pointer; border-radius: 6px !important; color: var(--game-gold-dim); font-family: 'Cinzel', serif; font-size: 12px; font-weight: bold; text-align: center; transition: 0.2s;}
         .m-tool.active, .m-tool:hover { background: var(--game-border) !important; color: var(--game-gold) !important; border-color: var(--game-gold) !important; box-shadow: 0 0 10px rgba(212,181,114,0.4) !important; }
         .wrapper path { stroke: var(--game-gold); fill: none; stroke-width: 2.5; }
@@ -454,8 +454,8 @@ const colHover = document.getElementById('clr_hover').value;
                 const sounds = ["а","о","у","э","и","ы","б","б'","п","п'","в","в'","ф","ф'","г","г'","к","к'","д","д'","т","т'","ж","ш","з","з'","с","с'","х","х'","ц","ч'","щ'","й'","л","л'","м","м'","н","н'","р","р'"];
                 h += '<div class="kb">';
                 sounds.forEach(s => {
-                    // Обрати внимание: теперь никаких скриптов внутри HTML, только чистое значение data-sound
-                    h += '<div class="kb-btn" data-sound="[' + s + ']">' + s + '</div>';
+                    // ИСПРАВЛЕНИЕ: Убраны скобки из data-sound
+                    h += '<div class="kb-btn" data-sound="' + s + '">' + s + '</div>';
                 });
                 h += '</div>';
 
@@ -504,8 +504,6 @@ const colHover = document.getElementById('clr_hover').value;
             h += '<div id="msg" class="msg"></div>';
             app.innerHTML = h;
 
-            // БЕЗОПАСНАЯ ПРИВЯЗКА СОБЫТИЙ:
-            // Теперь Genially не будет ругаться, потому что мы добавляем клики через JavaScript, а не внутри HTML
             document.getElementById('checkBtn').addEventListener('click', check);
             document.getElementById('resetBtn').addEventListener('click', render);
 
@@ -516,9 +514,10 @@ const colHover = document.getElementById('clr_hover').value;
                 });
                 document.querySelectorAll('.kb-btn').forEach(btn => {
                     btn.addEventListener('click', function(e) {
-                        e.preventDefault(); // Защита от потери фокуса полем
+                        e.preventDefault(); 
                         if(window.lastInputTarget) {
-                            window.lastInputTarget.value = this.dataset.sound;
+                            // ИСПРАВЛЕНИЕ: Теперь символ добавляется к строке (+=), а не перезаписывает её (=)
+                            window.lastInputTarget.value += this.dataset.sound;
                             window.lastInputTarget.focus();
                         }
                     });
