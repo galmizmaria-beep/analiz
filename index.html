@@ -64,7 +64,7 @@
 
         .row-item { display: flex; gap: 10px; margin-bottom: 10px; background: var(--bg-inner); padding: 10px;
         border: 1px solid var(--border-color); border-radius: 4px; align-items: center;}
-        .row-item input, .row-item select { flex: 1;
+        .row-item input[type="text"], .row-item select { flex: 1;
         margin: 0; }
         .del-btn { background: none; border: none; color: #a30000; font-size: 18px;
         cursor: pointer; font-weight: bold; }
@@ -124,7 +124,6 @@
                 <label>Слово:</label> <input type="text" id="ph_word" value="ёлка" oninput="updatePreview()">
        
                 <label>Слоги, ударение (текстом):</label> <input type="text" id="ph_syl" value="ёл-ка, 2 слога" oninput="updatePreview()">
-                <label>Транскрипция:</label> <input type="text" id="ph_trans" value="[й' о л к а]" oninput="updatePreview()">
                 
                 <label>Буквы, звуки и характеристики:</label>
                 <div class="hint">Ученик введет характеристику текстом.
@@ -147,7 +146,7 @@ onclick="addPhRow()">+ Буква</button>
 
             <div id="tab-morphemic" class="section-content">
                 <label>Слово (ученик увидит его слитно):</label>
-                <div class="hint">Разбейте слово на морфемы.
+                <div class="hint">Разбейте слово на морфемы и отметьте, входит ли часть в основу.
 Система сама «склеит» их для ученика.</div>
                 <div id="mo_container"></div>
                 <button class="btn" style="background:transparent; border:1px dashed var(--gold); color:var(--gold);"
@@ -262,7 +261,7 @@ document.getElementById('ph_container').appendChild(div);
             updatePreview();
         }
 
-        function addMoRow(p='', t='root') {
+        function addMoRow(p='', t='root', s=true) {
             const div = document.createElement('div');
 div.className = 'row-item';
             div.innerHTML = `
@@ -270,12 +269,13 @@ div.className = 'row-item';
                 <select onchange="updatePreview()">
                     <option value="prefix" ${t==='prefix'?'selected':''}>Приставка</option>
                     <option value="root" ${t==='root'?'selected':''}>Корень</option>
-              
                     <option value="suffix" ${t==='suffix'?'selected':''}>Суффикс</option>
                     <option value="ending" ${t==='ending'?'selected':''}>Окончание</option>
                     <option value="postfix" ${t==='postfix'?'selected':''}>Постфикс</option>
-                    <option value="stem" ${t==='stem'?'selected':''}>Основа</option>
                 </select>
+                <label style="margin:0; display:flex; align-items:center; gap:5px; color:var(--text-light); font-family:var(--font-text); font-size:14px; text-transform:none; letter-spacing:0;">
+                    <input type="checkbox" class="chk-stem" ${s?'checked':''} onchange="updatePreview()" style="width:auto;"> Основа
+                </label>
                 <button class="del-btn" onclick="this.parentElement.remove(); updatePreview();">✖</button>
             `;
 document.getElementById('mo_container').appendChild(div);
@@ -289,13 +289,12 @@ addPhRow('', 'о', 'гласный, ударный');
         addPhRow('к', 'к', 'согласный, глухой парный, твердый парный');
 addPhRow('а', 'а', 'гласный, безударный');
 
-        addMoRow('под', 'prefix'); addMoRow('снеж', 'root'); addMoRow('ник', 'suffix'); addMoRow('и', 'ending');
+        addMoRow('под', 'prefix', true); addMoRow('снеж', 'root', true); addMoRow('ник', 'suffix', true); addMoRow('и', 'ending', false);
 function updatePreview() {
             let task = { type: currentTab };
 if(currentTab === 'phonetic') {
                 task.word = document.getElementById('ph_word').value;
 task.syl = document.getElementById('ph_syl').value;
-                task.trans = document.getElementById('ph_trans').value;
                 task.rows = Array.from(document.getElementById('ph_container').children).map(row => ({
                     l: row.children[0].value, s: row.children[1].value, c: row.children[2].value
                 }));
@@ -303,7 +302,7 @@ task.syl = document.getElementById('ph_syl').value;
                 task.sounds = document.getElementById('ph_sounds').value;
 } else if(currentTab === 'morphemic') {
                 task.rows = Array.from(document.getElementById('mo_container').children).map(row => ({
-                    p: row.children[0].value, t: row.children[1].value
+                    p: row.children[0].value, t: row.children[1].value, s: row.querySelector('.chk-stem').checked
                 }));
 } else {
                 task.word = document.getElementById('ml_word').value;
@@ -399,21 +398,22 @@ const colHover = document.getElementById('clr_hover').value;
 
         /* Фонетика */
         .ph-row { display: flex;
-            gap: 8px; margin-bottom: 6px; align-items: center; flex-wrap: nowrap; width: 100%; max-width: 700px; justify-content: center;
+            gap: 10px; margin-bottom: 15px !important; align-items: center; flex-wrap: nowrap; width: 100%; max-width: 700px; justify-content: center;
             box-sizing: border-box;}
         .ph-l { font-weight: bold; font-size: 18px; min-width: 25px; text-align: center;
             color: var(--game-gold);}
         .ph-s { width: 50px !important; min-width: 45px !important; text-align: center; font-weight: bold; }
         .ph-c { flex: 1; width: 100%;}
-        .kb { display: flex; flex-wrap: wrap; gap: 6px; background: var(--game-inner); padding: 12px; border: 1px solid var(--game-border); border-radius: 6px; justify-content: center; margin-bottom: 15px; width: 100%; max-width: 700px; box-sizing: border-box;}
+        .kb { display: flex; flex-wrap: wrap; gap: 6px; background: var(--game-inner); padding: 12px; border: 1px solid var(--game-border); border-radius: 6px; justify-content: center; margin-bottom: 25px; width: 100%; max-width: 700px; box-sizing: border-box;}
         .kb-btn { background: var(--game-bg); border: 1px solid var(--game-gold-dim) !important; color: var(--game-text); padding: 6px 10px; min-width: 32px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; box-sizing: border-box; transition: 0.2s;}
         .kb-btn:active, .kb-btn:hover { background: var(--game-gold); color: var(--game-inner); border-color: var(--game-gold) !important; }
 
         /* Морфемика */
-        .morph-zone { display: flex; font-size: 28px; justify-content: center; margin-top: 50px !important; margin-bottom: 20px !important; letter-spacing: 1px; font-weight: bold; flex-wrap: nowrap; width: 100%; position: relative;}
-        .m-part { position: relative; cursor: pointer; padding: 0 1px !important; margin: 0 !important; transition: color 0.2s;}
+        .morph-zone { display: flex; font-size: 28px; justify-content: center; margin-top: 50px !important; margin-bottom: 25px !important; letter-spacing: 1px; font-weight: bold; flex-wrap: nowrap; width: 100%; position: relative;}
+        .m-part { position: relative; cursor: pointer; padding: 0 1px 15px 1px !important; margin: 0 !important; transition: color 0.2s;}
         .m-part:hover { color: var(--game-gold); }
-        .m-svg { position: absolute; top: -25px !important; left: 0; width: 100%; height: 30px !important; pointer-events: none; overflow: visible !important;}
+        .m-svg-top { position: absolute; top: -25px !important; left: 0; width: 100%; height: 30px !important; pointer-events: none; overflow: visible !important;}
+        .m-svg-stem { position: absolute; bottom: 0; left: 0; width: 100%; height: 12px !important; pointer-events: none; overflow: visible !important;}
         .m-tools { display: flex; gap: 8px !important; justify-content: center; flex-wrap: wrap; margin-bottom: 15px !important; width: 100%; align-items: center; box-sizing: border-box;}
         .m-tool { border: 2px solid var(--game-border) !important; padding: 6px 10px !important; cursor: pointer; border-radius: 6px !important; color: var(--game-gold-dim); font-family: 'Cinzel', serif; font-size: 12px; font-weight: bold; text-align: center; transition: 0.2s;}
         .m-tool.active, .m-tool:hover { background: var(--game-border) !important; color: var(--game-gold) !important; border-color: var(--game-gold) !important; box-shadow: 0 0 10px rgba(212,181,114,0.4) !important; }
@@ -448,8 +448,8 @@ const colHover = document.getElementById('clr_hover').value;
             
             if(data.type === 'phonetic') {
                 h += '<div class="word-title">' + data.word + '</div>';
-                h += '<div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; width:100%; max-width:700px; box-sizing:border-box; margin-bottom:10px;">';
-                h += '<div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Слоги: <input type="text" id="ph_syl" style="max-width:160px;"></div> <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Транскрипция: <span style="font-size:20px; font-weight:bold; color:var(--game-gold);">[</span><input type="text" id="ph_tr" style="max-width:120px; text-align:center;"><span style="font-size:20px; font-weight:bold; color:var(--game-gold);">]</span></div></div>';
+                h += '<div style="display:flex; justify-content:center; width:100%; max-width:700px; box-sizing:border-box; margin-bottom:15px;">';
+                h += '<div style="display:flex; align-items:center; gap:8px; justify-content:center; font-size:16px;">Слоги: <input type="text" id="ph_syl" style="max-width:200px;"></div></div>';
                 h += '<div style="color:var(--game-gold-dim); text-align:center; font-size:11px; margin-bottom:5px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
                 
                 const sounds = ["а","о","у","э","и","ы","б","б'","п","п'","в","в'","ф","ф'","г","г'","к","к'","д","д'","т","т'","ж","ш","з","з'","с","с'","х","х'","ц","ч'","щ'","й'","л","л'","м","м'","н","н'","р","р'"];
@@ -508,7 +508,7 @@ const colHover = document.getElementById('clr_hover').value;
             document.getElementById('resetBtn').addEventListener('click', render);
 
             if(data.type === 'phonetic') {
-                document.querySelectorAll('.ph-s, #ph_tr').forEach(inp => {
+                document.querySelectorAll('.ph-s').forEach(inp => {
                     inp.addEventListener('focus', function() { window.lastInputTarget = this; });
                     inp.addEventListener('click', function() { window.lastInputTarget = this; });
                 });
@@ -537,10 +537,11 @@ const colHover = document.getElementById('clr_hover').value;
             }
         }
 
-        let selTool = null, userParts = [];
+        let selTool = null, userParts = [], userStems = [];
         
         function initMorphemic() {
             userParts = data.rows.map(() => '');
+            userStems = data.rows.map(() => false);
 
             document.querySelectorAll('.m-tool').forEach(t => t.addEventListener('click', function() {
                 document.querySelectorAll('.m-tool').forEach(ti => ti.classList.remove('active'));
@@ -553,20 +554,48 @@ const colHover = document.getElementById('clr_hover').value;
 
                 p.addEventListener('click', function() {
                     if(!selTool) return;
-                    userParts[this.dataset.i] = selTool;
-                    
-                    let svg = '<svg class="m-svg" preserveAspectRatio="none" viewBox="0 0 100 20">';
-                    if(selTool === 'prefix') svg += '<path d="M 5,20 L 5,5 L 95,5 L 95,15"/>';
-                    else if(selTool === 'root') svg += '<path d="M 0,20 Q 50,0 100,20"/>';
-                    else if(selTool === 'suffix') svg += '<path d="M 0,20 L 50,5 L 100,20"/>';
-                    else if(selTool === 'ending') svg += '<path d="M 5,5 h 90 v 15 h -90 z"/>';
-                    else if(selTool === 'postfix') svg += '<path d="M 0,20 L 25,5 L 50,20 M 50,20 L 75,5 L 100,20"/>';
-                    else if(selTool === 'stem') svg += '<path d="M 2,35 L 2,42 L 98,42 L 98,35"/>';
-                    svg += '</svg>';
-                    
-                    let old = this.querySelector('svg'); if(old) old.remove();
-                    this.innerHTML += svg;
+                    let idx = parseInt(this.dataset.i);
+
+                    if(selTool === 'stem') {
+                        userStems[idx] = !userStems[idx];
+                        renderStems();
+                    } else {
+                        userParts[idx] = selTool;
+                        renderTopPart(this, selTool);
+                    }
                 });
+            });
+        }
+
+        function renderTopPart(element, tool) {
+            let svg = '<svg class="m-svg-top" preserveAspectRatio="none" viewBox="0 0 100 20">';
+            if(tool === 'prefix') svg += '<path d="M 5,20 L 5,5 L 95,5 L 95,15"/>';
+            else if(tool === 'root') svg += '<path d="M 0,20 Q 50,0 100,20"/>';
+            else if(tool === 'suffix') svg += '<path d="M 0,20 L 50,5 L 100,20"/>';
+            else if(tool === 'ending') svg += '<path d="M 5,5 h 90 v 15 h -90 z"/>';
+            else if(tool === 'postfix') svg += '<path d="M 0,20 L 25,5 L 50,20 M 50,20 L 75,5 L 100,20"/>';
+            svg += '</svg>';
+            
+            let old = element.querySelector('.m-svg-top'); if(old) old.remove();
+            element.innerHTML += svg;
+        }
+
+        function renderStems() {
+            document.querySelectorAll('.m-part').forEach((p, i) => {
+                let old = p.querySelector('.m-svg-stem'); if(old) old.remove();
+                if(userStems[i]) {
+                    let isStart = (i === 0 || !userStems[i-1]);
+                    let isEnd = (i === userStems.length - 1 || !userStems[i+1]);
+                    
+                    let path = "";
+                    if (isStart && isEnd) { path = "M 2,0 L 2,10 L 98,10 L 98,0"; }
+                    else if (isStart) { path = "M 2,0 L 2,10 L 100,10"; }
+                    else if (isEnd) { path = "M 0,10 L 98,10 L 98,0"; }
+                    else { path = "M 0,10 L 100,10"; }
+                    
+                    let svg = '<svg class="m-svg-stem" preserveAspectRatio="none" viewBox="0 0 100 12"><path d="'+path+'"/></svg>';
+                    p.innerHTML += svg;
+                }
             });
         }
 
@@ -589,7 +618,6 @@ const colHover = document.getElementById('clr_hover').value;
             let ok = true;
             if(data.type === 'phonetic') {
                 if(normalizeStr(document.getElementById('ph_syl').value) !== normalizeStr(data.syl)) ok = false;
-                if(normalizeStr(document.getElementById('ph_tr').value) !== normalizeStr(data.trans)) ok = false;
                 data.rows.forEach((r, i) => {
                     if(normalizeStr(document.getElementById('s_'+i).value) !== normalizeStr(r.s)) ok = false;
                     if(normalizeStr(document.getElementById('c_'+i).value) !== normalizeStr(r.c)) ok = false;
@@ -597,7 +625,10 @@ const colHover = document.getElementById('clr_hover').value;
                 if(document.getElementById('ans_letters').value !== data.letters) ok = false;
                 if(document.getElementById('ans_sounds').value !== data.sounds) ok = false;
             } else if (data.type === 'morphemic') {
-                data.rows.forEach((r, i) => { if(userParts[i] !== r.t) ok = false; });
+                data.rows.forEach((r, i) => { 
+                    if(userParts[i] !== r.t) ok = false; 
+                    if(userStems[i] !== r.s) ok = false;
+                });
             } else if (data.type === 'morphology') {
                 const getZoneTags = id => Array.from(document.getElementById(id).children).filter(c=>c.classList.contains('tag')).map(t=>normalizeStr(t.innerText));
                 const checkArr = (id, targetStr) => {
@@ -630,11 +661,12 @@ const colHover = document.getElementById('clr_hover').value;
                 if(data.type === 'morphemic') {
                     if(window.hoveredPartIndex !== null && window.hoveredPartIndex !== undefined) {
                         userParts[window.hoveredPartIndex] = '';
+                        userStems[window.hoveredPartIndex] = false;
                         let partEl = document.querySelector('.m-part[data-i="'+window.hoveredPartIndex+'"]');
                         if(partEl) {
-                            let old = partEl.querySelector('svg');
-                            if(old) old.remove();
+                            let oldTop = partEl.querySelector('.m-svg-top'); if(oldTop) oldTop.remove();
                         }
+                        renderStems();
                     }
                 } else if(data.type === 'morphology') {
                     if(window.hoveredMorphTag && window.hoveredMorphTag.parentElement.classList.contains('drop-zone')) {
