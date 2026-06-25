@@ -132,6 +132,17 @@
                 <div id="ph_container"></div>
                 <button class="btn" style="background:transparent; border:1px dashed var(--gold); color:var(--gold);"
 onclick="addPhRow()">+ Буква</button>
+
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <div style="flex: 1;">
+                        <label>Количество букв:</label>
+                        <input type="number" id="ph_letters" value="4" oninput="updatePreview()">
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Количество звуков:</label>
+                        <input type="number" id="ph_sounds" value="5" oninput="updatePreview()">
+                    </div>
+                </div>
             </div>
 
             <div id="tab-morphemic" class="section-content">
@@ -287,6 +298,8 @@ task.syl = document.getElementById('ph_syl').value;
                 task.rows = Array.from(document.getElementById('ph_container').children).map(row => ({
                     l: row.children[0].value, s: row.children[1].value, c: row.children[2].value
                 }));
+                task.letters = document.getElementById('ph_letters').value;
+                task.sounds = document.getElementById('ph_sounds').value;
 } else if(currentTab === 'morphemic') {
                 task.rows = Array.from(document.getElementById('mo_container').children).map(row => ({
                     p: row.children[0].value, t: row.children[1].value
@@ -396,7 +409,7 @@ const colHover = document.getElementById('clr_hover').value;
         .kb-btn:active, .kb-btn:hover { background: var(--game-gold); color: var(--game-inner); border-color: var(--game-gold) !important; }
 
         /* Морфемика */
-        .morph-zone { display: flex; font-size: 28px; justify-content: center; margin: 40px 0 20px 0; letter-spacing: 1px; font-weight: bold; flex-wrap: wrap; width: 100%;}
+        .morph-zone { display: flex; font-size: 28px; justify-content: center; margin: 80px 0 20px 0; letter-spacing: 1px; font-weight: bold; flex-wrap: wrap; width: 100%;}
         .m-part { position: relative; cursor: pointer; padding: 4px; transition: color 0.2s; margin-top: 15px;}
         .m-part:hover { color: var(--game-gold); }
         .m-svg { position: absolute; top: -18px; left: 0; width: 100%; height: 30px; pointer-events: none;}
@@ -451,6 +464,11 @@ const colHover = document.getElementById('clr_hover').value;
                     h += '<input type="text" class="ph-s" id="s_'+i+'" placeholder="[ ]">';
                     h += '<input type="text" class="ph-c" id="c_'+i+'" placeholder="Опишите звук..."></div>';
                 });
+
+                h += '<div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap; width:100%; max-width:700px; box-sizing:border-box; margin-top:20px;">';
+                h += '<div style="display:flex; align-items:center; gap:8px; font-size:16px; font-weight:bold; color:var(--game-gold);">Букв: <input type="number" id="ans_letters" style="max-width:60px; text-align:center;"></div>';
+                h += '<div style="display:flex; align-items:center; gap:8px; font-size:16px; font-weight:bold; color:var(--game-gold);">Звуков: <input type="number" id="ans_sounds" style="max-width:60px; text-align:center;"></div>';
+                h += '</div>';
             } 
             else if(data.type === 'morphemic') {
                 h += '<div class="word-title" style="margin-bottom:5px;">' + data.rows.map(r => r.p).join('') + '</div>';
@@ -492,7 +510,7 @@ const colHover = document.getElementById('clr_hover').value;
             document.getElementById('resetBtn').addEventListener('click', render);
 
             if(data.type === 'phonetic') {
-                document.querySelectorAll('.ph-s').forEach(inp => {
+                document.querySelectorAll('.ph-s, #ph_tr').forEach(inp => {
                     inp.addEventListener('focus', function() { window.lastInputTarget = this; });
                     inp.addEventListener('click', function() { window.lastInputTarget = this; });
                 });
@@ -577,6 +595,8 @@ const colHover = document.getElementById('clr_hover').value;
                     if(normalizeStr(document.getElementById('s_'+i).value) !== normalizeStr(r.s)) ok = false;
                     if(normalizeStr(document.getElementById('c_'+i).value) !== normalizeStr(r.c)) ok = false;
                 });
+                if(document.getElementById('ans_letters').value !== data.letters) ok = false;
+                if(document.getElementById('ans_sounds').value !== data.sounds) ok = false;
             } else if (data.type === 'morphemic') {
                 data.rows.forEach((r, i) => { if(userParts[i] !== r.t) ok = false; });
             } else if (data.type === 'morphology') {
