@@ -376,20 +376,20 @@ const colHover = document.getElementById('clr_hover').value;
         .card::-webkit-scrollbar-thumb { background: var(--game-gold-dim); border-radius: 3px; }
 
         .wrapper h2 { font-family: 'Cinzel', serif;
-            color: var(--game-gold); margin-top: 0; margin-bottom: 20px; text-align: center; font-size: 22px; text-transform: uppercase;
-            letter-spacing: 2px; font-weight: bold;}
-        .word-title { font-size: 32px; font-weight: bold; color: var(--game-gold); text-align: center;
-            margin-bottom: 20px; letter-spacing: 2px; font-family: 'Playfair Display', serif;}
+            color: var(--game-gold); margin-top: 0; margin-bottom: 10px; text-align: center; font-size: 18px; text-transform: uppercase;
+            letter-spacing: 1px;}
+        .word-title { font-size: 24px; font-weight: bold; color: var(--game-hover); text-align: center;
+            margin-bottom: 15px; letter-spacing: 2px;}
         
         .wrapper input { background: var(--game-inner);
-            border: 1px solid var(--game-border) !important; color: var(--game-text); padding: 8px 12px; border-radius: 4px; font-size: 15px; font-family: 'Playfair Display', serif; box-sizing: border-box;
+            border: 1px solid var(--game-border) !important; color: var(--game-text); padding: 6px; border-radius: 4px; font-size: 14px; font-family: 'Playfair Display', serif; box-sizing: border-box;
             width: 100%; min-width: 0;}
         .wrapper input:focus { outline: none; border-color: var(--game-gold) !important;
         }
         
         .btn { background: var(--game-gold) !important;
-            color: var(--game-inner) !important; border: none !important; padding: 12px 20px !important; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 6px !important;
-            width: 100%; transition: 0.3s; font-size: 16px; box-sizing: border-box;
+            color: var(--game-inner) !important; border: none !important; padding: 10px 15px !important; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 6px !important;
+            width: 100%; transition: 0.3s; font-size: 14px; box-sizing: border-box;
             flex-shrink: 0;}
         .btn:hover { background: var(--game-hover) !important;
         }
@@ -398,14 +398,14 @@ const colHover = document.getElementById('clr_hover').value;
 
         /* Фонетика */
         .ph-row { display: flex;
-            gap: 15px; margin-bottom: 15px !important; align-items: center; flex-wrap: nowrap; width: 100%; max-width: 750px; justify-content: center; margin-left: auto; margin-right: auto;
+            gap: 15px; margin-bottom: 20px !important; align-items: center; flex-wrap: nowrap; width: 100%; max-width: 700px; justify-content: center;
             box-sizing: border-box;}
-        .ph-l { font-weight: bold; font-size: 24px; min-width: 30px; text-align: center;
-            color: var(--game-gold); font-family: 'Playfair Display', serif;}
-        .ph-s { width: 60px !important; min-width: 60px !important; text-align: center; font-weight: bold; font-size: 16px;}
-        .ph-c { flex: 1; width: 100%; font-size: 16px;}
-        .kb { display: flex; flex-direction: column; gap: 8px; background: var(--game-inner); padding: 15px; border: 1px solid var(--game-border); border-radius: 8px; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; max-width: 850px; margin-left: auto; margin-right: auto; box-sizing: border-box;}
-        .kb-btn { background: var(--game-bg); border: 1px solid var(--game-gold-dim) !important; color: var(--game-text); padding: 6px 12px; min-width: 32px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 15px; box-sizing: border-box; transition: 0.2s;}
+        .ph-l { font-weight: bold; font-size: 18px; min-width: 25px; text-align: center;
+            color: var(--game-gold);}
+        .ph-s { width: 50px !important; min-width: 45px !important; text-align: center; font-weight: bold; }
+        .ph-c { flex: 1; width: 100%;}
+        .kb { display: flex; flex-wrap: wrap; gap: 8px; background: var(--game-inner); padding: 15px; border: 1px solid var(--game-border); border-radius: 6px; justify-content: center; margin-bottom: 25px; width: 100%; max-width: 700px; box-sizing: border-box;}
+        .kb-btn { background: var(--game-bg); border: 1px solid var(--game-gold-dim) !important; color: var(--game-text); padding: 8px; min-width: 32px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; box-sizing: border-box; transition: 0.2s;}
         .kb-btn:active, .kb-btn:hover { background: var(--game-gold); color: var(--game-inner); border-color: var(--game-gold) !important; }
 
         /* Морфемика */
@@ -413,11 +413,12 @@ const colHover = document.getElementById('clr_hover').value;
         .m-part { position: relative; cursor: pointer; padding: 0 1px 15px 1px !important; margin: 0 !important; transition: color 0.2s;}
         .m-part:hover { color: var(--game-gold); }
         .m-svg-top { position: absolute; top: -25px !important; left: 0; width: 100%; height: 30px !important; pointer-events: none; overflow: visible !important;}
+        .m-svg-ending { position: absolute; top: 0px; left: -2px; width: calc(100% + 4px); height: calc(100% - 15px); pointer-events: none; z-index: 1;}
         .m-svg-stem { position: absolute; bottom: 0; left: 0; width: 100%; height: 12px !important; pointer-events: none; overflow: visible !important;}
         .m-tools { display: flex; gap: 8px !important; justify-content: center; flex-wrap: wrap; margin-bottom: 15px !important; width: 100%; align-items: center; box-sizing: border-box;}
         .m-tool { border: 2px solid var(--game-border) !important; padding: 6px 10px !important; cursor: pointer; border-radius: 6px !important; color: var(--game-gold-dim); font-family: 'Cinzel', serif; font-size: 12px; font-weight: bold; text-align: center; transition: 0.2s;}
         .m-tool.active, .m-tool:hover { background: var(--game-border) !important; color: var(--game-gold) !important; border-color: var(--game-gold) !important; box-shadow: 0 0 10px rgba(212,181,114,0.4) !important; }
-        .wrapper path { stroke: var(--game-gold); fill: none; stroke-width: 2.5; }
+        .wrapper path, .wrapper rect { stroke: var(--game-gold); fill: none; stroke-width: 2.5; }
 
         /* Морфология */
         .tag-bank { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 8px; justify-content: center; min-height: 40px; margin-bottom: 25px !important; width: 100%; max-width: 700px; box-sizing: border-box;}
@@ -448,20 +449,14 @@ const colHover = document.getElementById('clr_hover').value;
             
             if(data.type === 'phonetic') {
                 h += '<div class="word-title">' + data.word + '</div>';
-                h += '<div style="display:flex; justify-content:center; width:100%; max-width:700px; box-sizing:border-box; margin-bottom:20px; margin-left: auto; margin-right: auto;">';
-                h += '<div style="display:flex; align-items:center; gap:8px; justify-content:center; font-size:18px; color: var(--game-text);">Слоги: <input type="text" id="ph_syl" style="max-width:200px;"></div></div>';
-                h += '<div style="color:var(--game-gold-dim); text-align:center; font-size:13px; margin-bottom:10px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
+                h += '<div style="display:flex; justify-content:center; width:100%; max-width:700px; box-sizing:border-box; margin-bottom:15px;">';
+                h += '<div style="display:flex; align-items:center; gap:8px; justify-content:center; font-size:16px;">Слоги: <input type="text" id="ph_syl" style="width:250px; max-width:100%;"></div></div>';
+                h += '<div style="color:var(--game-gold-dim); text-align:center; font-size:11px; margin-bottom:5px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
                 
-                const row1 = ["а","о","у","э","и","ы","б","б'","п","п'","в","в'","ф","ф'","г","г'","к"];
-                const row2 = ["к'","д","д'","т","т'","ж","ш","з","з'","с","с'","х","х'","ц","ч'","щ'","й'"];
-                const row3 = ["л","л'","м","м'","н","н'","р","р'"];
+                const sounds = ["а","о","у","э","и","ы","б","б'","п","п'","в","в'","ф","ф'","г","г'","к","к'","д","д'","т","т'","ж","ш","з","з'","с","с'","х","х'","ц","ч'","щ'","й'","л","л'","м","м'","н","н'","р","р'"];
                 h += '<div class="kb">';
-                [row1, row2, row3].forEach(row => {
-                    h += '<div style="display:flex; flex-wrap:nowrap; gap:6px; justify-content:center;">';
-                    row.forEach(s => {
-                        h += '<div class="kb-btn" data-sound="[' + s + ']">' + s + '</div>';
-                    });
-                    h += '</div>';
+                sounds.forEach(s => {
+                    h += '<div class="kb-btn" data-sound="[' + s + ']">' + s + '</div>';
                 });
                 h += '</div>';
 
@@ -471,9 +466,9 @@ const colHover = document.getElementById('clr_hover').value;
                     h += '<input type="text" class="ph-c" id="c_'+i+'" placeholder="Опишите звук..."></div>';
                 });
 
-                h += '<div style="display:flex; gap:30px; justify-content:center; flex-wrap:wrap; width:100%; max-width:700px; box-sizing:border-box; margin-top:25px; margin-bottom: 40px; margin-left: auto; margin-right: auto;">';
-                h += '<div style="display:flex; align-items:center; gap:10px; font-size:18px; font-weight:bold; color:var(--game-gold);">Букв: <input type="number" id="ans_letters" style="max-width:70px; text-align:center; font-size: 18px;"></div>';
-                h += '<div style="display:flex; align-items:center; gap:10px; font-size:18px; font-weight:bold; color:var(--game-gold);">Звуков: <input type="number" id="ans_sounds" style="max-width:70px; text-align:center; font-size: 18px;"></div>';
+                h += '<div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap; width:100%; max-width:700px; box-sizing:border-box; margin-top:20px;">';
+                h += '<div style="display:flex; align-items:center; gap:8px; font-size:16px; font-weight:bold; color:var(--game-gold);">Букв: <input type="number" id="ans_letters" style="max-width:60px; text-align:center;"></div>';
+                h += '<div style="display:flex; align-items:center; gap:8px; font-size:16px; font-weight:bold; color:var(--game-gold);">Звуков: <input type="number" id="ans_sounds" style="max-width:60px; text-align:center;"></div>';
                 h += '</div>';
             } 
             else if(data.type === 'morphemic') {
@@ -503,9 +498,9 @@ const colHover = document.getElementById('clr_hover').value;
                 zones.forEach(z => h += '<div class="drop-zone" id="'+z.id+'"><div class="dz-title">'+z.n+'</div></div>');
             }
 
-            h += '<div style="display: flex; gap: 15px; width: 100%; max-width: 500px; margin-top: auto; margin-bottom: 10px; justify-content: center; margin-left: auto; margin-right: auto;">';
-            h += '<button class="btn" id="resetBtn" style="background: transparent !important; border: 1px solid var(--game-gold) !important; color: var(--game-gold) !important; margin-top: 0;">СБРОСИТЬ</button>';
-            h += '<button class="btn" id="checkBtn" style="margin-top: 0;">ПРОВЕРИТЬ</button>';
+            h += '<div style="display: flex; gap: 15px; width: 100%; max-width: 700px; margin-top: auto; justify-content: center;">';
+            h += '<button class="btn" id="resetBtn" style="background: transparent !important; border: 1px solid var(--game-gold) !important; color: var(--game-gold) !important; margin-top: 0; flex: 1;">СБРОСИТЬ</button>';
+            h += '<button class="btn" id="checkBtn" style="margin-top: 0; flex: 1;">ПРОВЕРИТЬ</button>';
             h += '</div>';
             h += '<div id="msg" class="msg"></div>';
             app.innerHTML = h;
@@ -574,15 +569,20 @@ const colHover = document.getElementById('clr_hover').value;
         }
 
         function renderTopPart(element, tool) {
-            let svg = '<svg class="m-svg-top" preserveAspectRatio="none" viewBox="0 0 100 20">';
-            if(tool === 'prefix') svg += '<path d="M 5,20 L 5,5 L 95,5 L 95,15"/>';
-            else if(tool === 'root') svg += '<path d="M 0,20 Q 50,0 100,20"/>';
-            else if(tool === 'suffix') svg += '<path d="M 0,20 L 50,5 L 100,20"/>';
-            else if(tool === 'ending') svg += '<path d="M 5,5 h 90 v 15 h -90 z"/>';
-            else if(tool === 'postfix') svg += '<path d="M 0,20 L 25,5 L 50,20 M 50,20 L 75,5 L 100,20"/>';
-            svg += '</svg>';
+            let svg = '';
+            if(tool === 'ending') {
+                svg = '<svg class="m-svg-ending" preserveAspectRatio="none" viewBox="0 0 100 100"><rect x="0" y="0" width="100" height="100" style="stroke:var(--game-gold); fill:none; stroke-width:4;"/></svg>';
+            } else {
+                svg = '<svg class="m-svg-top" preserveAspectRatio="none" viewBox="0 0 100 20">';
+                if(tool === 'prefix') svg += '<path d="M 5,20 L 5,5 L 95,5 L 95,15"/>';
+                else if(tool === 'root') svg += '<path d="M 0,20 Q 50,0 100,20"/>';
+                else if(tool === 'suffix') svg += '<path d="M 0,20 L 50,5 L 100,20"/>';
+                else if(tool === 'postfix') svg += '<path d="M 0,20 L 25,5 L 50,20 M 50,20 L 75,5 L 100,20"/>';
+                svg += '</svg>';
+            }
             
-            let old = element.querySelector('.m-svg-top'); if(old) old.remove();
+            let oldTop = element.querySelector('.m-svg-top'); if(oldTop) oldTop.remove();
+            let oldEnd = element.querySelector('.m-svg-ending'); if(oldEnd) oldEnd.remove();
             element.innerHTML += svg;
         }
 
@@ -671,6 +671,7 @@ const colHover = document.getElementById('clr_hover').value;
                         let partEl = document.querySelector('.m-part[data-i="'+window.hoveredPartIndex+'"]');
                         if(partEl) {
                             let oldTop = partEl.querySelector('.m-svg-top'); if(oldTop) oldTop.remove();
+                            let oldEnd = partEl.querySelector('.m-svg-ending'); if(oldEnd) oldEnd.remove();
                         }
                         renderStems();
                     }
