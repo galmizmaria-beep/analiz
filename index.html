@@ -274,6 +274,7 @@ div.className = 'row-item';
                     <option value="suffix" ${t==='suffix'?'selected':''}>Суффикс</option>
                     <option value="ending" ${t==='ending'?'selected':''}>Окончание</option>
                     <option value="postfix" ${t==='postfix'?'selected':''}>Постфикс</option>
+                    <option value="stem" ${t==='stem'?'selected':''}>Основа</option>
                 </select>
                 <button class="del-btn" onclick="this.parentElement.remove(); updatePreview();">✖</button>
             `;
@@ -419,10 +420,10 @@ const colHover = document.getElementById('clr_hover').value;
         .wrapper path { stroke: var(--game-gold); fill: none; stroke-width: 2.5; }
 
         /* Морфология */
-        .tag-bank { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 8px; justify-content: center; min-height: 40px; margin-bottom: 15px; width: 100%; max-width: 700px; box-sizing: border-box;}
+        .tag-bank { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 8px; justify-content: center; min-height: 40px; margin-bottom: 25px !important; width: 100%; max-width: 700px; box-sizing: border-box;}
         .tag { background: var(--game-border) !important; border: 1px solid var(--game-gold) !important; padding: 5px 10px !important; border-radius: 15px !important; font-size: 13px; cursor: pointer; user-select: none; transition: 0.2s; color: var(--game-hover); text-align: center;}
         .tag.selected { background: var(--game-gold) !important; color: var(--game-inner) !important; transform: scale(1.05); box-shadow: 0 0 10px rgba(212,181,114,0.6) !important;}
-        .drop-zone { border: 2px dashed var(--game-gold-dim) !important; padding: 8px !important; border-radius: 6px !important; margin-bottom: 8px; min-height: 35px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.2) !important; width: 100%; max-width: 700px; box-sizing: border-box;}
+        .drop-zone { border: 2px dashed var(--game-gold-dim) !important; padding: 8px !important; border-radius: 6px !important; margin-bottom: 12px !important; min-height: 35px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.2) !important; width: 100%; max-width: 700px; box-sizing: border-box;}
         .drop-zone:hover { background: rgba(212,181,114,0.1) !important; }
         .dz-title { font-family: 'Cinzel', serif; color: var(--game-gold-dim); font-size: 11px; width: 100%; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 1px;}
     </style>
@@ -448,14 +449,13 @@ const colHover = document.getElementById('clr_hover').value;
             if(data.type === 'phonetic') {
                 h += '<div class="word-title">' + data.word + '</div>';
                 h += '<div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; width:100%; max-width:700px; box-sizing:border-box; margin-bottom:10px;">';
-                h += '<div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Слоги: <input type="text" id="ph_syl" style="max-width:160px;"></div> <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Транскрипция: <input type="text" id="ph_tr" style="max-width:160px;"></div></div>';
+                h += '<div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Слоги: <input type="text" id="ph_syl" style="max-width:160px;"></div> <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:140px; justify-content:center; font-size:14px;">Транскрипция: <span style="font-size:20px; font-weight:bold; color:var(--game-gold);">[</span><input type="text" id="ph_tr" style="max-width:120px; text-align:center;"><span style="font-size:20px; font-weight:bold; color:var(--game-gold);">]</span></div></div>';
                 h += '<div style="color:var(--game-gold-dim); text-align:center; font-size:11px; margin-bottom:5px;">Клавиатура звуков (кликните поле звука, затем букву):</div>';
                 
                 const sounds = ["а","о","у","э","и","ы","б","б'","п","п'","в","в'","ф","ф'","г","г'","к","к'","д","д'","т","т'","ж","ш","з","з'","с","с'","х","х'","ц","ч'","щ'","й'","л","л'","м","м'","н","н'","р","р'"];
                 h += '<div class="kb">';
                 sounds.forEach(s => {
-                    // ИСПРАВЛЕНИЕ: Убраны скобки из data-sound
-                    h += '<div class="kb-btn" data-sound="' + s + '">' + s + '</div>';
+                    h += '<div class="kb-btn" data-sound="[' + s + ']">' + s + '</div>';
                 });
                 h += '</div>';
 
@@ -473,7 +473,7 @@ const colHover = document.getElementById('clr_hover').value;
             else if(data.type === 'morphemic') {
                 h += '<div class="word-title" style="margin-bottom:5px;">' + data.rows.map(r => r.p).join('') + '</div>';
                 h += '<div style="text-align:center; color:var(--game-gold-dim); margin-bottom:15px; font-size:13px; width: 100%;">Выберите инструмент и кликните на часть слова</div>';
-                h += '<div class="m-tools"><div class="m-tool" data-t="prefix">Приставка</div><div class="m-tool" data-t="root">Корень</div><div class="m-tool" data-t="suffix">Суффикс</div><div class="m-tool" data-t="ending">Окончание</div><div class="m-tool" data-t="postfix">Постфикс</div></div>';
+                h += '<div class="m-tools"><div class="m-tool" data-t="prefix">Приставка</div><div class="m-tool" data-t="root">Корень</div><div class="m-tool" data-t="suffix">Суффикс</div><div class="m-tool" data-t="ending">Окончание</div><div class="m-tool" data-t="postfix">Постфикс</div><div class="m-tool" data-t="stem">Основа</div></div>';
                 h += '<div class="morph-zone">';
                 data.rows.forEach((r, i) => h += '<div class="m-part" data-i="'+i+'">' + r.p + '</div>');
                 h += '</div>';
@@ -516,7 +516,6 @@ const colHover = document.getElementById('clr_hover').value;
                     btn.addEventListener('click', function(e) {
                         e.preventDefault(); 
                         if(window.lastInputTarget) {
-                            // ИСПРАВЛЕНИЕ: Теперь символ добавляется к строке (+=), а не перезаписывает её (=)
                             window.lastInputTarget.value += this.dataset.sound;
                             window.lastInputTarget.focus();
                         }
@@ -562,6 +561,7 @@ const colHover = document.getElementById('clr_hover').value;
                     else if(selTool === 'suffix') svg += '<path d="M 0,20 L 50,5 L 100,20"/>';
                     else if(selTool === 'ending') svg += '<path d="M 5,5 h 90 v 15 h -90 z"/>';
                     else if(selTool === 'postfix') svg += '<path d="M 0,20 L 25,5 L 50,20 M 50,20 L 75,5 L 100,20"/>';
+                    else if(selTool === 'stem') svg += '<path d="M 2,35 L 2,42 L 98,42 L 98,35"/>';
                     svg += '</svg>';
                     
                     let old = this.querySelector('svg'); if(old) old.remove();
